@@ -9,9 +9,11 @@ namespace GameHandler
     {
         public List<Card> Hand { get; private set; }
         public int Bank { get; private set; }
-        public Player(int bank)
+        public string Name { get; private set; }
+        public Player(int bank, string name)
         {
             this.Bank = bank;
+            this.Name = name;
             this.Hand = new List<Card>();
         }
         //Subtracts amount from total, returns new total

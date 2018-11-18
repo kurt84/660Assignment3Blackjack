@@ -100,7 +100,7 @@
       <Name>GameHandler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Persistence\Persistence.csproj">
-      <Project>{1158b1ac-c7d8-4f70-8eed-ea5f8341d399}</Project>
+      <Project>{a7eb7742-eb7e-4ded-825b-b7a9f2136cf1}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
