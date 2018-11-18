@@ -2,7 +2,7 @@
 using System;
 using System.Data.Entity;
 
-namespace Persistence
+namespace Data
 {
     public class GameModel : DbContext
     {

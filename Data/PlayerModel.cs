@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Web;
 using GameHandler;
 
-namespace Persistence
+namespace Data
 {
     public class PlayerModel
     {
