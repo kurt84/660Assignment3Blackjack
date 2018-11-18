@@ -99,10 +99,6 @@
       <Project>{3d07cf00-564a-4dfd-a890-a4a411bcc93b}</Project>
       <Name>GameHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Persistence\Persistence.csproj">
-      <Project>{a7eb7742-eb7e-4ded-825b-b7a9f2136cf1}</Project>
-      <Name>Persistence</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
