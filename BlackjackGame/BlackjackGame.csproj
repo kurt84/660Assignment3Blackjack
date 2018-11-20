@@ -102,6 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{86752703-CBB5-466D-ACBE-8560B8B681A2}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Game\GameHandler.csproj">
       <Project>{3d07cf00-564a-4dfd-a890-a4a411bcc93b}</Project>
       <Name>GameHandler</Name>

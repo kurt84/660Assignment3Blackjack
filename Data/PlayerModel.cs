@@ -14,7 +14,11 @@ namespace Data
         public int Id { get; set; }
         public string Name { get; set; }
         public int Bank { get; set; }
-        public PlayerModel(int bank, string name) { }
+        public PlayerModel(int bank, string name)
+        {
+            Bank = bank;
+            Name = name;
+        }
         public PlayerModel(Player player)
         {
             this.Bank = player.Bank;

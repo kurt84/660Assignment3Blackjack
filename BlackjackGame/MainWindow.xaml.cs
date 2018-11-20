@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Data;
 using GameHandler;
 
 namespace BlackjackGame
@@ -21,9 +22,12 @@ namespace BlackjackGame
         public MainWindow()
         {
             InitializeComponent();
+            var win = new Welcome();
+            win.Show();
             var dealer = new Dealer();
             dealer.Shuffle();
             var temp = dealer.Draw();
+            var p = DummyDb.Load("Kurt");
         }
     }
 }
