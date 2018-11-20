@@ -7,6 +7,7 @@ namespace GameHandler
     public class Dealer
     {
         private List<Card> Deck { get; set; }
+        private int Score { get; set; }
 
         public Dealer(int numDecks = 1)
         {
@@ -62,7 +63,7 @@ namespace GameHandler
             //turn 
             if (ace && total <= 11)
                 total += 10;
-            return total;
+            return Score = total;
         }
     }
 }

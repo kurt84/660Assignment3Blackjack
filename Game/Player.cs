@@ -5,7 +5,7 @@ using static GameHandler.CardType;
 
 namespace GameHandler
 {
-    public class Player
+    public class Player : IPlayer
     {
         public List<Card> Hand { get; private set; }
         public int Bank { get; private set; }
@@ -40,6 +40,28 @@ namespace GameHandler
         public List<Card> Stand()
         {
             return Hand;
+        }
+
+        public int EvaluateHand(List<Card> cards)
+        {
+            int total = 0;
+            bool ace = false;
+            foreach (Card card in Hand)
+            {
+                if (card.Face == Face.Ace)
+                    ace = true;
+
+                //enum values start at Ace = 1, Two = 2, and so on
+                if ((int)card.Face >= 10)
+                    total += 10;
+                //add the integer value of the enum
+                else
+                    total += (int)card.Face;
+            }
+            //turn 
+            if (ace && total <= 11)
+                total += 10;
+            return total;
         }
     }
 }
