@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush ImageSource="Resources/cardImages/table_background.jpg" Stretch="UniformToFill"/>
+        </Grid.Background>
+        <Button Content="Hit" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="160" Height="30" x:Name="hitButton"/>
+        <Button Content="Stand" HorizontalAlignment="Left" Margin="10,390,0,0" VerticalAlignment="Top" Width="80" x:Name="standButton"/>
+        <Button Content="Surrender" HorizontalAlignment="Left" Margin="90,390,0,0" VerticalAlignment="Top" Width="80" x:Name="surrenderButton"/>
+        <Button Content="Bet" HorizontalAlignment="Left" Margin="10,335,0,0" VerticalAlignment="Top" Width="80" x:Name="betButton"/>
+        <Button Content="Double Down" HorizontalAlignment="Left" Margin="90,335,0,0" VerticalAlignment="Top" Width="80" x:Name="doubleButton"/>
+        <Button Content="Split" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="80" x:Name="splitButton"/>
+        <Button Content="Insurance" HorizontalAlignment="Left" Margin="90,362,0,0" VerticalAlignment="Top" Width="80" x:Name="insuranceButton"/>
     </Grid>
 </Window>
