@@ -34,6 +34,41 @@ namespace GameHandler
             return player.EvaluateHand(playerCards) > 21;
         }
 
+        public Card Hit()
+        {
+
+        }
+
+        public void Stand()
+        {
+
+        }
+
+        public int DoubleDown()
+        {
+
+        }
+
+        public void Surrender()
+        {
+
+        }
+
+        public void Split()
+        {
+
+        }
+
+        public void Insurance()
+        {
+
+        }
+
+        public void Bet()
+        {
+
+        }
+
 
     }
 }
