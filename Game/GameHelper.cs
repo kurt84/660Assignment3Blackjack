@@ -36,7 +36,7 @@ namespace GameHandler
 
         public Card Hit()
         {
-
+            return new Card(CardType.Suit.Clubs, CardType.Face.Ace);
         }
 
         public void Stand()
@@ -46,7 +46,7 @@ namespace GameHandler
 
         public int DoubleDown()
         {
-
+            return 1;
         }
 
         public void Surrender()

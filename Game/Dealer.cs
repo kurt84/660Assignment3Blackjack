@@ -4,7 +4,7 @@ using static GameHandler.CardType;
 
 namespace GameHandler
 {
-    public class Dealer
+    public class Dealer :IPlayer
     {
         private List<Card> Deck { get; set; }
         private int Score { get; set; }
@@ -44,7 +44,7 @@ namespace GameHandler
         }
 
         //this scores the list of cards passed in
-        private int EvaluateHand(List<Card> cards)
+        public int EvaluateHand(List<Card> cards)
         {
             int total = 0;
             bool ace = false;

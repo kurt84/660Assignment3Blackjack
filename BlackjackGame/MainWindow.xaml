@@ -6,16 +6,54 @@
         xmlns:local="clr-namespace:BlackjackGame"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Name="tableGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="Resources/cardImages/table_background.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
-        <Button Content="Hit" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="160" Height="30" x:Name="hitButton"/>
-        <Button Content="Stand" HorizontalAlignment="Left" Margin="10,390,0,0" VerticalAlignment="Top" Width="80" x:Name="standButton"/>
-        <Button Content="Surrender" HorizontalAlignment="Left" Margin="90,390,0,0" VerticalAlignment="Top" Width="80" x:Name="surrenderButton"/>
-        <Button Content="Bet" HorizontalAlignment="Left" Margin="10,335,0,0" VerticalAlignment="Top" Width="80" x:Name="betButton"/>
-        <Button Content="Double Down" HorizontalAlignment="Left" Margin="90,335,0,0" VerticalAlignment="Top" Width="80" x:Name="doubleButton"/>
-        <Button Content="Split" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="80" x:Name="splitButton"/>
-        <Button Content="Insurance" HorizontalAlignment="Left" Margin="90,362,0,0" VerticalAlignment="Top" Width="80" x:Name="insuranceButton"/>
+        <Grid Name="playerButtons" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Content="Hit" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="30" x:Name="hitButton" Click="hitButton_Click"/>
+            <Button Content="Stand" Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" x:Name="standButton"/>
+            <Button Content="Surrender" Grid.Column="1" Grid.Row="3" VerticalAlignment="Top" x:Name="surrenderButton"/>
+            <Button Content="Bet" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" x:Name="betButton"/>
+            <Button Content="Double Down" Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top" x:Name="doubleButton"/>
+            <Button Content="Split" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" x:Name="splitButton"/>
+            <Button Content="Insurance" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" x:Name="insuranceButton"/>
+        </Grid>
+        <Grid Name="dealerGrid" Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Grid Name="playerGrid" Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Button Grid.Row="2" Grid.Column="2" Height="50" VerticalAlignment="Bottom" Click="Reset_Button">RESET</Button>
     </Grid>
 </Window>
