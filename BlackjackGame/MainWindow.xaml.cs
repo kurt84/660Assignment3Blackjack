@@ -19,15 +19,32 @@ namespace BlackjackGame
 {
     public partial class MainWindow : Window
     {
+        private int numDecks = 5;
+        private Dealer dealer;
         public MainWindow()
         {
             InitializeComponent();
+            Reset();
             var win = new Welcome();
             win.Show();
-            var dealer = new Dealer();
-            dealer.Shuffle();
-            var temp = dealer.Draw();
             var p = DummyDb.Load("Kurt");
+        }
+
+        private void hitButton_Click(object sender, RoutedEventArgs e)
+        {
+            RenderItem.Card(dealer.Draw(),playerGrid);
+        }
+
+        private void Reset_Button(object sender, RoutedEventArgs e)
+        {
+            Reset();
+        }
+
+        public void Reset() {
+            dealer = new Dealer(numDecks);
+            dealer.Shuffle();
+            RenderItem.InitGrid(playerGrid);
+            RenderItem.InitGrid(dealerGrid);
         }
     }
 }

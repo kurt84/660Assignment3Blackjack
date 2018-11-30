@@ -8,9 +8,16 @@ namespace Data
 {
     public static class DummyDb
     {
+        private static Dictionary<string, int> Players = new Dictionary<string, int>{
+            { "Kurt" , 500 },
+            { "Clayton", 500 },
+            { "Noah", 500},
+            { "James", 500 }
+        };
         public static void Save(Player p)
         {
-            return;
+            if(!Players.Any(x => x.Key == p.Name))
+                Players.Add(p.Name, 100);
         }
         public static Player Load(string name)
         {
