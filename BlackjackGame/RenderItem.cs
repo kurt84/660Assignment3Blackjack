@@ -16,9 +16,11 @@ namespace BlackjackGame
     {
         public static int CardHeight = 120;
         public static int CardWidth = 80;
-        public static void Card(Card card, Grid grid)
+        public static void Card(Card card, Grid grid, string res = null)
         {
-            string resource = "Resources/CardImages/" + ((int)card.Face).ToString() + "_of_" + card.Suit.ToString() + ".png";
+            string resource = res;
+            if(res == null)
+                resource = "Resources/CardImages/" + ((int)card.Face).ToString() + "_of_" + card.Suit.ToString() + ".png";
             BitmapImage temp = new BitmapImage(new Uri(
             string.Format(
             "pack://application:,,,/{0};component/{1}"
@@ -42,6 +44,11 @@ namespace BlackjackGame
             //set image to lowest row (a row will be added when doubling down)
             Grid.SetRow(image, grid.RowDefinitions.Count - 1);
         }
+        public static void RevealHiddenCard(Grid grid)
+        {
+            //remove card back image that is covering the hidden card
+            //can iterate and compare children using linq function
+        }
 
         public static void InitGrid(Grid grid)
         {
@@ -52,6 +59,10 @@ namespace BlackjackGame
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(CardWidth/4)});
             grid.RowDefinitions.Clear();
             grid.RowDefinitions.Add(new RowDefinition());
+        }
+        public static void GameOver()
+        {
+            //draw winner message on the center of the table
         }
     }
 }

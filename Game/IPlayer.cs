@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameHandler
 {
-    interface IPlayer
+    public interface IPlayer
     {
         int EvaluateHand(List<Card> cards);
     }
