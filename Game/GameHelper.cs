@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameHandler
 {
-    class GameHelper
+    public class GameHelper
     {
         //---Evaluates the scores to determine the winner-------------------------------
         public IPlayer CalculateWinner(Dealer dealer, 
