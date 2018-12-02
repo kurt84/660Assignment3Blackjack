@@ -15,10 +15,10 @@ namespace GameHandler
         private Boolean sCheck;
         private Boolean sCheck2;
         private Boolean InsureCheck;
-        //public bool canInsurance = false;
-        //public bool canSurrender = false;
-        //public bool canDouble = false;
-        //public bool canSplit = false;
+        public bool canInsurance = false;
+        public bool canSurrender = false;
+        public bool canDouble = false;
+        public bool canSplit = false;
         private int finalCount;
         //public Boolean Win { get; private set; }
         //private Boolean CheckWinner = false;

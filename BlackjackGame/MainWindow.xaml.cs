@@ -31,52 +31,49 @@ namespace BlackjackGame
             Reset();
             var win = new Welcome();
             win.Show();
-            //ar p = DummyDb.Load("Kurt");
         }
 
         private void Hit_Button(object sender, RoutedEventArgs e)
         {
             gameHelper.Hit();
-            //SetButtons();
+            SetButtons();
         }
         private void Stand_Button(object sender, RoutedEventArgs e)
         {
             RenderItem.RevealHiddenCard(dealerGrid);
             gameHelper.Stand();
-            //SetButtons();
+            SetButtons();
         }
         private void Surrender_Button(object sender, RoutedEventArgs e)
         {
             gameHelper.Surrender();
             HandleDealer();
-            //SetButtons();
+            SetButtons();
         }
         private void Bet_Button(object sender, RoutedEventArgs e)
         {
-            int amount = BETPLACEHOLDER;
+            int amount = Int32.Parse(betAmount.Text);
             gameHelper.InitialBet(amount);
-            //SetButtons();
+            SetButtons();
         }
         private void Double_Button(object sender, RoutedEventArgs e)
         {
             doublingDown = true;
+            ToggleBetDouble();
             betGrid.Visibility = Visibility.Visible;
-            
-            int amount = BETPLACEHOLDER;
-            gameHelper.DoubleDown(amount);
-            //SetButtons();
+            SetButtons();
         }
         private void Split_Button(object sender, RoutedEventArgs e)
         {
             int amount = BETPLACEHOLDER;
             gameHelper.Split(amount);
-            //SetButtons();
+            SetButtons();
         }
         private void Insurance_Button(object sender, RoutedEventArgs e)
         {
             int amount = BETPLACEHOLDER;
             gameHelper.MakeInsuranceBet(amount);
-            //SetButtons();
+            SetButtons();
         }
 
         private void Reset_Button(object sender, RoutedEventArgs e)
@@ -131,7 +128,7 @@ namespace BlackjackGame
                 new PlayerCardEvent((Card card, int hands) => { /*DO SOMETHING WITH HANDS VARIABLE*/RenderItem.Card(card, playerGrid); return card; })
             );
             NewHand();
-            //SetButtons();
+            SetButtons();
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -142,14 +139,20 @@ namespace BlackjackGame
         private void DealMeIn(object sender, RoutedEventArgs e)
         {
             ToggleBetDouble();
-            //betGrid.Visibility = Visibility.Hidden;
+            betGrid.Visibility = Visibility.Hidden;
             currentBetAmount.Content = betAmount.Text;
             gameHelper.Deal();
-            //SetButtons();
+            SetButtons();
+        }
+        public void DoubleDownBet(object sender, RoutedEventArgs e)
+        {
+            int amount = Int32.Parse(betAmount.Text);
+            gameHelper.DoubleDown(amount);
+            ToggleBetDouble();
         }
         public void ToggleBetDouble()
         {
-            if (submitBet.Visibility == Visibility.Hidden)
+            if (!doublingDown)
             {
                 submitBet.Visibility = Visibility.Visible;
                 submitDouble.Visibility = Visibility.Hidden;
@@ -160,44 +163,44 @@ namespace BlackjackGame
                 submitDouble.Visibility = Visibility.Visible;
             }
         }
-        //public void HideExtraFunctions()
-        //{
-        //    if (!doublingDown)
-        //    {
-        //        doubleButton.Visibility = Visibility.Hidden;
-        //        splitButton.Visibility = Visibility.Hidden;
-        //    }
-        //    surrenderButton.Visibility = Visibility.Hidden;
-        //    insuranceButton.Visibility = Visibility.Hidden;
-        //}
-        //public void ShowExtraFunctions()
-        //{
-        //    doubleButton.Visibility = Visibility.Visible;
-        //    surrenderButton.Visibility = Visibility.Visible;
-        //    splitButton.Visibility = Visibility.Visible;
-        //    insuranceButton.Visibility = Visibility.Visible;
-        //}
+        public void HideExtraFunctions()
+        {
+            if (!doublingDown)
+            {
+                doubleButton.Visibility = Visibility.Hidden;
+                splitButton.Visibility = Visibility.Hidden;
+            }
+            surrenderButton.Visibility = Visibility.Hidden;
+            insuranceButton.Visibility = Visibility.Hidden;
+        }
+        public void ShowExtraFunctions()
+        {
+            doubleButton.Visibility = Visibility.Visible;
+            surrenderButton.Visibility = Visibility.Visible;
+            splitButton.Visibility = Visibility.Visible;
+            insuranceButton.Visibility = Visibility.Visible;
+        }
         public void SetButtons()
         {
-            //if (gameHelper.canDouble)
-            //    doubleButton.Visibility = Visibility.Visible;
-            //else
-            //    doubleButton.Visibility = Visibility.Hidden;
+            if (gameHelper.canDouble)
+                doubleButton.Visibility = Visibility.Visible;
+            else
+                doubleButton.Visibility = Visibility.Hidden;
 
-            //if (gameHelper.canSurrender)
-            //    surrenderButton.Visibility = Visibility.Visible;
-            //else
-            //    surrenderButton.Visibility = Visibility.Hidden;
+            if (gameHelper.canSurrender)
+                surrenderButton.Visibility = Visibility.Visible;
+            else
+                surrenderButton.Visibility = Visibility.Hidden;
 
-            //if (gameHelper.canSplit)
-            //    splitButton.Visibility = Visibility.Visible;
-            //else
-            //    splitButton.Visibility = Visibility.Hidden;
+            if (gameHelper.canSplit)
+                splitButton.Visibility = Visibility.Visible;
+            else
+                splitButton.Visibility = Visibility.Hidden;
 
-            //if (gameHelper.canInsurance)
-            //    insuranceButton.Visibility = Visibility.Visible;
-            //else
-            //    insuranceButton.Visibility = Visibility.Hidden;
+            if (gameHelper.canInsurance)
+                insuranceButton.Visibility = Visibility.Visible;
+            else
+                insuranceButton.Visibility = Visibility.Hidden;
         }
     }
 }
