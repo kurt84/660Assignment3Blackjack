@@ -7,5 +7,6 @@ namespace GameHandler
     public interface IPlayer
     {
         int EvaluateHand(List<Card> cards);
+        
     }
 }
