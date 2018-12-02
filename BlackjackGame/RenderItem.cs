@@ -23,7 +23,7 @@ namespace BlackjackGame
             if (!hidden)
                 resource = "Resources/CardImages/" + ((int)card.Face).ToString() + "_of_" + card.Suit.ToString() + ".png";
             else
-                resource = "Resources/CardImages/red_joker.png";
+                resource = "Resources/CardImages/Back_of_Card.png";
             BitmapImage temp = new BitmapImage(new Uri(
                 string.Format(
                     "pack://application:,,,/{0};component/{1}"
@@ -35,12 +35,16 @@ namespace BlackjackGame
             {
                 Source = temp,
                 Height = CardHeight,
-                Tag = card
+                Tag = hidden? null :card
             };
+            if (hidden)
+                Card(card, grid);
 
             grid.Children.Add(image);
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(CardWidth / 4) });
+            if(!hidden)
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(CardWidth / 4) });
+
             Grid.SetColumn(image, (grid.ColumnDefinitions.Count - 4));
 
             //hard coding to 4 for now, later can make this value dynamic by comparing grid width to card width vs number of children if we want to use the space better
@@ -63,7 +67,15 @@ namespace BlackjackGame
 
         internal static void RevealHiddenCard(Grid grid)
         {
-            
+            foreach(Image item in grid.Children)
+            {
+                if (item.Tag == null)
+                {
+                    grid.Children.Remove(item);
+                    break;
+                }
+                    
+            }
         }
 
         public static void GameOver()

@@ -39,7 +39,7 @@ namespace BlackjackGame
         }
         private void Stand_Button(object sender, RoutedEventArgs e)
         {
-            HandleDealer();
+            gameHelper.Stand();
         }
         private void Surrender_Button(object sender, RoutedEventArgs e)
         {
