@@ -42,6 +42,8 @@ namespace BlackjackGame
         {
             RenderItem.RevealHiddenCard(dealerGrid);
             gameHelper.Stand();
+
+            EndHand();
             SetButtons();
         }
         private void Surrender_Button(object sender, RoutedEventArgs e)
@@ -52,7 +54,9 @@ namespace BlackjackGame
         }
         private void Bet_Button(object sender, RoutedEventArgs e)
         {
-            int amount = Int32.Parse(betAmount.Text);
+            int amount = 0;
+            if(betAmount.Text != null)
+                amount = Int32.Parse(betAmount.Text);
             gameHelper.InitialBet(amount);
             SetButtons();
         }
@@ -73,6 +77,7 @@ namespace BlackjackGame
         {
             int amount = BETPLACEHOLDER;
             gameHelper.MakeInsuranceBet(amount);
+            gameHelper.canInsurance = false;
             SetButtons();
         }
 
@@ -106,6 +111,10 @@ namespace BlackjackGame
         }
         private void EndHand()
         {
+            if (gameHelper.GameOver)
+            {
+               dealerText.Text = gameHelper.EndGame();
+            }
             //RenderItem.GameOver(gameHelper.GameOverMessage);
             //Wait for a few seconds
             NewHand();
@@ -182,6 +191,11 @@ namespace BlackjackGame
         }
         public void SetButtons()
         {
+            if (gameHelper.canInsurance)
+            {
+                dealerText.Text = gameHelper.OfferInsurance();
+            }
+            dealerText.Text = gameHelper.EndGame();
             if (gameHelper.canDouble)
                 doubleButton.Visibility = Visibility.Visible;
             else

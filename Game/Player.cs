@@ -15,7 +15,7 @@ namespace GameHandler
         public List<Card> Hand4 { get; private set; }
         public List<Card> CurrentHand { get; private set; }
         public int CurrentBet { get; set; }
-        public int Bank { get; private set; }
+        public int Bank { get;  set; }
         public Boolean CheckTurn { get; private set; }
         public string Name { get; private set; }
         private PlayerCardEvent playerNotify;
@@ -50,6 +50,12 @@ namespace GameHandler
         {
             Bank += amount;
             return Bank;
+        }
+
+
+        public int CurrentBetPay(int amount)
+        {
+            return amount;
         }
         //Adds card to hand, returns new total
         public List<Card> Hit(Card card)
