@@ -8,13 +8,17 @@ namespace GameHandler
     public class GameHelper
     {
         private Dealer d;
-        private Player p; 
+        private Player p;
         private int deck = 1;
         private int roll = 100;
         private String name = "";
         private Boolean sCheck;
         private Boolean sCheck2;
         private Boolean InsureCheck;
+        //public bool canInsurance = false;
+        //public bool canSurrender = false;
+        //public bool canDouble = false;
+        //public bool canSplit = false;
         private int finalCount;
         //public Boolean Win { get; private set; }
         //private Boolean CheckWinner = false;
@@ -161,18 +165,19 @@ namespace GameHandler
         public void Stand()
         {
             sCheck2 = false;
-            
-            if (p.Hand2 == null || p.Hand3 == null || p.Hand4 == null)
-            {
-                d.EvaluateHand(p.Stand());
-                EndTurn();
-            }
 
-            if (p.Hand2 != null && p.Hand3 != null && p.Hand4 != null)
-            {
-                d.EvaluateHand(p.Stand());
-                EndTurn();
-            }
+            //if (p.Hand2 == null || p.Hand3 == null || p.Hand4 == null)
+            //{
+            //    d.EvaluateHand(p.Stand());
+            //    EndTurn();
+            //}
+
+            //if (p.Hand2 != null && p.Hand3 != null && p.Hand4 != null)
+            //{
+            //    d.EvaluateHand(p.Stand());
+            //    EndTurn();
+            //}
+            EndTurn();
 
             
         }
