@@ -7,6 +7,7 @@ namespace GameHandler
     public class Dealer :IPlayer
     {
         private List<Card> Deck { get; set; }
+        public List<Card> DealerHand { get; set; }
         private int Score { get; set; }
 
         public Dealer(int numDecks = 1)
@@ -42,6 +43,15 @@ namespace GameHandler
             Deck.RemoveAt(0);
             return next;
         }
+        // dealer hit
+        public List<Card> Hit(Card card)
+        {
+            DealerHand.Add(card);
+            return DealerHand;
+        }
+
+     
+
 
         //this scores the list of cards passed in
         public int EvaluateHand(List<Card> cards)
@@ -65,5 +75,7 @@ namespace GameHandler
                 total += 10;
             return Score = total;
         }
+
+        
     }
 }
