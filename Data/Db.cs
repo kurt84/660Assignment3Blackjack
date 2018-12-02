@@ -17,12 +17,16 @@ namespace Data
                 context.SaveChanges();
             }
         }
-        public static Player Load(string name)
+        public static int Load(string name)
         {
             using (GameModel context = new GameModel())
             {
+                var player = context.Players.FirstOrDefault(x => x.Name == name);
                 //return player with name if it exists, otherwise make a new player
-                return (context.Players.FirstOrDefault(x => x.Name == name) ?? (new PlayerModel(100, name))).AsPlayer();
+                if (player != null)
+                    return player.Bank;
+                else
+                    return 100;
             }
 
             

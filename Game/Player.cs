@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using static GameHandler.CardType;
+using static GameHandler.Events;
 
 namespace GameHandler
 {
@@ -17,8 +18,10 @@ namespace GameHandler
         public int Bank { get; private set; }
         public Boolean CheckTurn { get; private set; }
         public string Name { get; private set; }
-        public Player(int bank, string name)
+        private PlayerCardEvent playerNotify;
+        public Player(PlayerCardEvent playerEvent, int bank, string name)
         {
+            playerNotify = playerEvent;
             i = 1; 
             this.Bank = bank;
             this.Name = name;
@@ -56,6 +59,7 @@ namespace GameHandler
             {
                 Hand4.Add(card);
             }
+            playerNotify(card, i);
             return CurrentHand;
         }
         public List<Card> Stand()
@@ -79,6 +83,7 @@ namespace GameHandler
         {
             MakeBet(amount);
             CurrentHand.Add(card);
+            playerNotify(card, i);
             return CurrentHand; 
         }
 

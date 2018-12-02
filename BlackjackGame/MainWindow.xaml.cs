@@ -16,14 +16,14 @@ using GameHandler;
 using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
+using static GameHandler.Events;
 
 namespace BlackjackGame
 {
     public partial class MainWindow : Window
     {
-        private int numDecks = 5;
-        private Dealer dealer;
         private GameHelper gameHelper;
+        private const int BETPLACEHOLDER = 5;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,11 +35,10 @@ namespace BlackjackGame
 
         private void Hit_Button(object sender, RoutedEventArgs e)
         {
-            RenderItem.Card(dealer.Draw(),playerGrid);
+            gameHelper.Hit();
         }
         private void Stand_Button(object sender, RoutedEventArgs e)
         {
-            //RenderItem.Card(dealer.Draw(), dealerGrid);
             HandleDealer();
         }
         private void Surrender_Button(object sender, RoutedEventArgs e)
@@ -49,20 +48,23 @@ namespace BlackjackGame
         }
         private void Bet_Button(object sender, RoutedEventArgs e)
         {
-            int amount = 5; //this will be read from a text field later
-            //gameHelper.MakeInitialBet(amount);
+            int amount = BETPLACEHOLDER;
+            gameHelper.InitialBet(amount);
         }
         private void Double_Button(object sender, RoutedEventArgs e)
         {
-            
+            int amount = BETPLACEHOLDER;
+            gameHelper.DoubleDown(amount);
         }
         private void Split_Button(object sender, RoutedEventArgs e)
         {
-            
+            int amount = BETPLACEHOLDER;
+            gameHelper.Split(amount);
         }
         private void Insurance_Button(object sender, RoutedEventArgs e)
         {
-            
+            int amount = BETPLACEHOLDER;
+            gameHelper.MakeInsuranceBet(amount);
         }
 
         private void Reset_Button(object sender, RoutedEventArgs e)
@@ -73,7 +75,7 @@ namespace BlackjackGame
         {
 
             //ADD CODE TO REVEAL DEALERS CARD
-            //RenderItem.HiddenCard()
+            RenderItem.RevealHiddenCard(dealerGrid);
             //while (!gameHelper.DealerStands)
             //{
             //    Card card = gameHelper.DealerHit();
@@ -81,11 +83,16 @@ namespace BlackjackGame
             //        RenderItem.Card(card, dealerGrid);
             //}
             //FOR TESTING ONLY - REAL CODE IS ABOVE
-            for (int i = 0; i < 2; i++)
-            {
-                RenderItem.Card(dealer.Draw(), dealerGrid);
-            }
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    RenderItem.Card(dealer.Draw(), dealerGrid);
+            //}
             //EndHand();
+
+        }
+        private void StartHand()
+        {
+            gameHelper.Deal();
 
         }
         private void EndHand()
@@ -94,6 +101,7 @@ namespace BlackjackGame
             //Wait for a few seconds
             NewHand();
         }
+        //Prepares to play a new hand
         private void NewHand()
         {
             RenderItem.InitGrid(playerGrid);
@@ -104,9 +112,10 @@ namespace BlackjackGame
             //Calls to render item for dealers card and hidden card
         }
         public void Reset() {
-            dealer = new Dealer(numDecks);
-            dealer.Shuffle();
-            gameHelper = new GameHelper();
+            gameHelper = new GameHelper(
+                new DealerCardEvent((Card card, bool hidden) => { RenderItem.Card(card, dealerGrid, hidden); return card; }),
+                new PlayerCardEvent((Card card, int hands) => { /*DO SOMETHING WITH HANDS VARIABLE*/RenderItem.Card(card, playerGrid); return card; })
+            );
             NewHand();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static GameHandler.Events;
 
 namespace GameHandler
 {
@@ -17,15 +18,15 @@ namespace GameHandler
         private int finalCount;
         //public Boolean Win { get; private set; }
         //private Boolean CheckWinner = false;
-        public GameHelper()
+        public GameHelper(DealerCardEvent dealer, PlayerCardEvent player)
         {
             //Win = false;
             sCheck = false;
             sCheck2 = true;
             InsureCheck = false;
             finalCount = 0;
-            d = new Dealer(deck);
-            p = new Player(roll, name);
+            d = new Dealer(dealer, deck);
+            p = new Player(player, roll, name);
         }
         //---Evaluates the scores to determine the winner-------------------------------
         public IPlayer CalculateWinner(Dealer dealer, 
@@ -93,10 +94,10 @@ namespace GameHandler
             d.Shuffle(1);
             
             // add card to player's hand, to dealer's, to player's, and to dealer's to make a two card hand for each
-            p.Hand.Add(d.Draw());
-            d.DealerHand.Add(d.Draw());
-            p.Hand.Add(d.Draw());
-            d.DealerHand.Add(d.Draw());
+            p.Hit(d.Draw());
+            d.Hit(d.Draw());
+            p.Hit(d.Draw());
+            d.Hit(d.Draw());
 
             // check dealers hand for insurance 
             // code for checking if insurance should be offered

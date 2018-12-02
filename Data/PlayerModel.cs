@@ -24,9 +24,5 @@ namespace Data
             this.Bank = player.Bank;
             this.Name = player.Name;
         }
-        public Player AsPlayer()
-        {
-            return new Player(Bank, Name);
-        }
     }
 }

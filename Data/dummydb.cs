@@ -19,7 +19,7 @@ namespace Data
             if(!Players.Any(x => x.Key == p.Name))
                 Players.Add(p.Name, 100);
         }
-        public static Player Load(string name)
+        public static int Load(string name)
         {
 
             List<string> names = new List<string>{ "Kurt", "Clayton", "James", "Noah" };
@@ -29,7 +29,7 @@ namespace Data
             //    return (context.Players.FirstOrDefault(x => x.Name == name) ?? (new PlayerModel(100, name))).AsPlayer();
             //}
 
-            return (new PlayerModel(names.Any(x => x == name)? 1000 : 100, name)).AsPlayer();
+            return names.Any(x => x == name)? 1000 : 100;
         }
     }
 }

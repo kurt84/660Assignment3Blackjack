@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using static GameHandler.CardType;
+using static GameHandler.Events;
 
 namespace GameHandler
 {
@@ -9,10 +10,13 @@ namespace GameHandler
         private List<Card> Deck { get; set; }
         public List<Card> DealerHand { get; set; }
         private int Score { get; set; }
+        private DealerCardEvent dealerNotify;
 
-        public Dealer(int numDecks = 1)
+        public Dealer(DealerCardEvent dealerEvent, int numDecks = 1)
         {
+            dealerNotify = dealerEvent;
             Deck = new List<Card>();
+            DealerHand = new List<Card>();
             for (int i = 0; i < numDecks; i++) {
                 foreach(Suit suit in Suit.GetValues(typeof(Suit)))
                 {
@@ -47,6 +51,10 @@ namespace GameHandler
         public List<Card> Hit(Card card)
         {
             DealerHand.Add(card);
+            if (DealerHand.Count == 1)
+                dealerNotify(card, true);
+            else
+                dealerNotify(card, false);
             return DealerHand;
         }
 
