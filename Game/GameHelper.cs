@@ -24,12 +24,15 @@ namespace GameHandler
         public bool dealBust = false;
         public bool dub = false;
         private int finalCount;
+        private int shuffle;
         public bool Win = false;
         public bool bust = false;
+        
         //private Boolean CheckWinner = false;
         public GameHelper(DealerCardEvent dealer, PlayerCardEvent player)
         {
             //Win = false;
+            shuffle = 0;
             sCheck = false;
             sCheck2 = true;
             InsureCheck = false;
@@ -93,6 +96,12 @@ namespace GameHandler
         // initial bet to be made to get game started
         public void InitialBet(int amount)
         {
+            shuffle++;
+            if (shuffle == 5)
+            {
+                d.Shuffle(1);
+                shuffle = 0;
+            }
             d.DealerHand = new List<Card>();
             p.Hand = new List<Card>();
             p.CurrentHand = p.Hand;
@@ -276,13 +285,7 @@ namespace GameHandler
 
         public void Surrender()
         {
-            if (sCheck2)
-            {
-                sCheck = true;
-                //p.ReceivePayout(p.CurrentBet / 2);
-                finalCount = p.CurrentBetPay(p.CurrentBet / 2);
-                
-            }
+            sCheck = true;
         }
 
         public int GetBank()
@@ -362,7 +365,8 @@ namespace GameHandler
 
             if (sCheck)
             {
-                return "You lose due to Surrender " + finalCount + " returned";
+                p.ReceivePayout((p.CurrentBet/2));
+                return "You lose due to Surrender " + p.CurrentBet / 2 + " returned";
             }
             if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)) && GameOver == true)
             {
@@ -400,7 +404,7 @@ namespace GameHandler
             {
 
 
-                return "You kept your bet " + finalCount + " returned.";
+                return "Dealer BlackJack you lose";
 
             }
             if ((d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand)) && (GameOver == true))
