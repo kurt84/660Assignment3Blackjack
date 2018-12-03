@@ -24,8 +24,8 @@ namespace BlackjackGame
     public partial class MainWindow : Window
     {
         private bool canDoubleDown = false;
+        private bool hideFirstTurnFunctions = false;
         private GameHelper gameHelper;
-        private const int BETPLACEHOLDER = 5;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +39,7 @@ namespace BlackjackGame
         {
             gameHelper.Hit();
             canDoubleDown = false;
+            hideFirstTurnFunctions = true;
             if (gameHelper.GameOver)
                 EndPlayerTurn();
             SetButtons();
@@ -70,6 +71,7 @@ namespace BlackjackGame
                 betAmount.Text = "";
                 currentBetAmount.Content = "Bet: " + amount;
                 canDoubleDown = true;
+                hideFirstTurnFunctions = false;
                 ToggleBetDouble();
 
                 timer.Start();
@@ -101,6 +103,7 @@ namespace BlackjackGame
                 currentBetAmount.Content += " + " + amount;
                 canDoubleDown = false;
                 ToggleBetDouble();
+                hideFirstTurnFunctions = true;
                 betGrid.Visibility = Visibility.Hidden;
                 currentBank.Content = "Bank: " + gameHelper.GetBank();
                 SetButtons();
@@ -109,10 +112,11 @@ namespace BlackjackGame
             else
                 DisplayMessage("You must enter an amount.");
         }
+
         private void Split_Button(object sender, RoutedEventArgs e)
         {
-            int amount = BETPLACEHOLDER;
-            gameHelper.Split(amount);
+            hideFirstTurnFunctions = false;
+            gameHelper.Split(0);
             SetButtons();
         }
         private void Insurance_Button(object sender, RoutedEventArgs e)

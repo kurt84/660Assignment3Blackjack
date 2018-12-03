@@ -64,7 +64,7 @@
             <Button Name="submitDouble" Grid.Row="1" Height="40" Click="Double_Button" Visibility="Hidden">Double Down</Button>
         </Grid>
         <Label Name="currentBetAmount" FontSize="30" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
-        <Border Grid.Row="0" Grid.Column="1" BorderThickness="2" BorderBrush="Black">
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"  BorderThickness="2" BorderBrush="Black">
             <TextBlock Name="dealerText" TextAlignment="Center" FontSize="35" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
         </Border>
         

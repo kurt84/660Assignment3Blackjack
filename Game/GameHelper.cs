@@ -349,72 +349,63 @@ namespace GameHandler
         // For message in the GUI
         public String EndGame()
         {
-
-            if (((dub == true) && dealBust == true && GameOver == true) ||
-                ((dub == true) && (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true)))
+            if (GameOver)
             {
-                p.ReceivePayout((p.CurrentBet * 2)/2);
-                return "You Won a Double Down " + p.CurrentBet * 2;
+                if (((dub == true) && dealBust == true) ||
+                    ((dub == true) && (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand))))
+                {
+                    p.ReceivePayout((p.CurrentBet * 2) / 2);
+                    return "You Won " + p.CurrentBet * 2 + "On A Double Down ";
+                }
+
+                else if (sCheck)
+                {
+                    p.ReceivePayout((p.CurrentBet / 2));
+                    return "You Lose Due To Surrender, " + p.CurrentBet / 2 + " Returned";
+                }
+                else if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)))
+                {
+
+                    p.ReceivePayout(p.CurrentBet / 2);
+                    return "Push";
+                }
+
+                else if ((d.EvaluateHand(p.CurrentHand) == 21) && (p.CurrentHand.Count == 2))
+                {
+
+                    p.ReceivePayout(finalCount);
+                    return "BLACKJACK! You Won " + finalCount;
+                }
+                else if (d.EvaluateHand(p.CurrentHand) > 21)
+                {
+                    return "Player Bust";
+                }
+
+                else if (dealBust == true)
+                {
+                    finalCount = p.CurrentBet * 2;
+                    p.ReceivePayout(finalCount / 2);
+                    return "Dealer Busted! You Won " + finalCount;
+                }
+
+                else if (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand))
+                {
+                    finalCount = p.CurrentBet * 2;
+                    p.ReceivePayout(finalCount / 2);
+                    return "You Won " + finalCount;
+                }
+
+                else if (DealerBlackJack())
+                {
+                    return "Dealer BlackJack You Lose";
+                }
+                else if (d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand))
+                {
+                    return "You Lose";
+                }
             }
 
-            if (sCheck)
-            {
-                p.ReceivePayout((p.CurrentBet/2));
-                return "You lose due to Surrender " + p.CurrentBet / 2 + " returned";
-            }
-            if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)) && GameOver == true)
-            {
-
-                p.ReceivePayout(p.CurrentBet/2);
-                return "Push";
-            }
-
-            if ((d.EvaluateHand(p.CurrentHand) == 21) && (GameOver == true) && (p.CurrentHand.Count == 2))
-            {
-
-                p.ReceivePayout(finalCount);
-                return "BLACKJACK " + finalCount;
-            }
-            if ((d.EvaluateHand(p.CurrentHand) > 21) && (GameOver == true))
-            {
-                return "Player Bust";
-            }
-
-            if (dealBust == true && GameOver == true)
-            {
-                finalCount = p.CurrentBet * 2;
-                p.ReceivePayout(finalCount/2);
-                return "Dealer Busted You Win " + finalCount;
-            }
-
-            if ((d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true))
-            {
-                finalCount = p.CurrentBet * 2;
-                p.ReceivePayout(finalCount/2);
-                return "You Won " + finalCount;
-            }
-
-            if (DealerBlackJack() && (GameOver == true))
-            {
-
-
-                return "Dealer BlackJack you lose";
-
-            }
-            if ((d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand)) && (GameOver == true))
-            {
-                return "You lose";
-            }
-
-            else
-            {
-                return "";
-            }
-
-
-
-
-
+            return "";
         }
 
     }
