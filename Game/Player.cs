@@ -9,11 +9,11 @@ namespace GameHandler
     public class Player : IPlayer
     {
         public int i;
-        public List<Card> Hand { get; private set; }
+        public List<Card> Hand { get; set; }
         public List<Card> Hand2 { get; private set; }
         public List<Card> Hand3 { get; private set; }
         public List<Card> Hand4 { get; private set; }
-        public List<Card> CurrentHand { get; private set; }
+        public List<Card> CurrentHand { get;  set; }
         public int CurrentBet { get; set; }
         public int Bank { get;  set; }
         public Boolean CheckTurn { get; private set; }
@@ -39,9 +39,9 @@ namespace GameHandler
         {
              
             //Worry about error handling later - should Player even do this?
-            if (amount > Bank)
-                ;//throw new Exception("Insufficient funds");
-            CurrentBet += amount;
+            //if (amount > Bank)
+            //    ;//throw new Exception("Insufficient funds");
+            CurrentBet = amount; 
             Bank -= amount;
             return Bank;
         }
@@ -87,7 +87,7 @@ namespace GameHandler
 
         public List<Card> DoubleDown(Card card, int amount)
         {
-            MakeBet(amount);
+            CurrentBet = CurrentBet + amount; 
             CurrentHand.Add(card);
             playerNotify(card, i);
             return CurrentHand; 
