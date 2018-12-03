@@ -143,7 +143,7 @@ namespace GameHandler
         {
             MakeBet(amount);
             int pay = amount * 2;
-            return ReceivePayout(amount + pay);
+            return CurrentBetPay(amount);
         }
 
         private Boolean EndTurn()

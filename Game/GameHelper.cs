@@ -83,22 +83,21 @@ namespace GameHandler
         {
 
             p.MakeBet(amount);
-            p.Bank = p.Bank - amount;
+            //p.Bank = p.Bank - amount;
             // in case there is no deal button we could just call this method and run the deal method.
             Deal();
         }
 
-        public void MakeInsuranceBet(int amount)
+        public void MakeInsuranceBet()
         {
-            if (amount <= (p.CurrentBet / 2))
-            {
+           
                 if (DealerBlackJack())
                 {
-                    finalCount = p.Insurance(amount);
-                    p.Insurance(amount);
+                    finalCount = p.Insurance(p.CurrentBet / 2);
+                    p.Insurance(p.CurrentBet / 2);
                 }
                 
-            }
+            
         }
 
         // Beginning deal method for beginning of hand. 
@@ -258,6 +257,10 @@ namespace GameHandler
             }
         }
 
+        public int GetBank()
+        {
+            return p.Bank;
+        }
 
         public void EndTurn()
         {
