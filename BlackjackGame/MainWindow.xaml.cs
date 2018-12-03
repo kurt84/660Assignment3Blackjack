@@ -128,7 +128,6 @@ namespace BlackjackGame
         //Prepares to play a new hand
         private void NewHand()
         {
-            ToggleBetDouble();
             doubleButton.Visibility = Visibility.Hidden;
             RenderItem.InitGrid(playerGrid);
             RenderItem.InitGrid(dealerGrid);
@@ -139,6 +138,7 @@ namespace BlackjackGame
             canDoubleDown = false;
             betGrid.Visibility = Visibility.Visible;
 
+            ToggleBetDouble();
             currentBank.Content = "Bank: " + gameHelper.GetBank();
             currentBetAmount.Content = "";
             gameHelper.GameOver = false;
