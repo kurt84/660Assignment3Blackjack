@@ -71,15 +71,15 @@ namespace GameHandler
         public List<Card> Stand()
         {
             // assuming default is null!!!!
-            if(Hand4 != null)
-            {
-                i = 1; 
-                if (Hand4.Count >= 2)
-                {
-                    CurrentHand = Hand4;
-                    return CurrentHand;
-                }
-            }
+            //if(Hand4 != null)
+            //{
+            //    i = 1; 
+            //    if (Hand4.Count >= 2)
+            //    {
+            //        CurrentHand = Hand4;
+            //        return CurrentHand;
+            //    }
+            //}
 
             
             return CurrentHand;

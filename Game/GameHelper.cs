@@ -151,6 +151,7 @@ namespace GameHandler
             if (d.EvaluateHand(d.DealerHand) == 21)
             {
                 finalCount = p.CurrentBet;
+                GameOver = true;
                 return true;
             }
             else
@@ -168,6 +169,7 @@ namespace GameHandler
             {
                 CalculateWinner(d, p, d.DealerHand, p.CurrentHand);
                 bust = true;
+                GameOver = true;
                 return d.EvaluateHand(p.CurrentHand);
             }
             return d.EvaluateHand(p.CurrentHand);
@@ -197,6 +199,7 @@ namespace GameHandler
             //    EndTurn();
             //}
             EndTurn();
+            d.EvaluateHand(p.Stand());
 
             
         }
@@ -260,15 +263,20 @@ namespace GameHandler
             {
                 sCheck = true;
                 p.ReceivePayout(p.CurrentBet / 2);
-                finalCount = p.ReceivePayout(p.CurrentBet / 2);
+                finalCount = p.CurrentBetPay(p.CurrentBet / 2);
                 EndGame();
             }
         }
 
         public int GetBank()
         {
+            if (GameOver)
+            {
+                return p.ReceivePayout(p.CurrentBet * 2);
+            }
             return p.Bank;
         }
+        
 
         public void EndTurn()
         {
@@ -291,6 +299,7 @@ namespace GameHandler
             if (BustCheck(d, d.DealerHand) == true)
             {
                     CalculateWinner(d, p, d.DealerHand, p.Hand);
+                    GameOver = true;
                     EndGame();
 
                 if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
@@ -298,6 +307,7 @@ namespace GameHandler
                     CalculateWinner(d, p, d.DealerHand, p.Hand2);
                     CalculateWinner(d, p, d.DealerHand, p.Hand3);
                     CalculateWinner(d, p, d.DealerHand, p.Hand4);
+                    
                     EndGame();
                 }
             }
@@ -306,6 +316,7 @@ namespace GameHandler
             else
             {
                 CalculateWinner(d, p, d.DealerHand, p.Hand);
+                GameOver = true;
                 EndGame();
 
                 if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
@@ -334,12 +345,12 @@ namespace GameHandler
                 return "You lose due to Surrender " + finalCount + " returned";
             }
 
-            if (d.EvaluateHand(p.CurrentHand) > 21)
+            if ((d.EvaluateHand(p.CurrentHand) > 21) && (GameOver == true))
             {
                 return "Player Bust";
             }
 
-            if (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand))
+            if ((d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true))
             {
                 return "You Won " + finalCount;
             }
@@ -351,7 +362,7 @@ namespace GameHandler
                 return "You kept your bet " + finalCount + " returned.";
 
             }
-            if (d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand))
+            if ((d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand)) && (GameOver == true))
             {
                 return "You lose";
             }
