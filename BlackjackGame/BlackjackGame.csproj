@@ -179,5 +179,17 @@
     <Resource Include="Resources\CardImages\red_joker.png" />
     <Resource Include="Resources\CardImages\table_background.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CardImages\card_back.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CardImages\card_back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\piggybank.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
