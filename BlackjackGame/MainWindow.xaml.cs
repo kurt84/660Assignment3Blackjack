@@ -130,17 +130,13 @@ namespace BlackjackGame
             doubleButton.Visibility = Visibility.Hidden;
             RenderItem.InitGrid(playerGrid);
             RenderItem.InitGrid(dealerGrid);
-            gameHelper.canInsurance = false;
-            gameHelper.canSurrender = true;
-            gameHelper.canDouble = true;
-            gameHelper.canSplit = false;
             canDoubleDown = false;
             betGrid.Visibility = Visibility.Visible;
 
             ToggleBetDouble();
             currentBank.Content = "Bank: " + gameHelper.GetBank();
             currentBetAmount.Content = "";
-            gameHelper.GameOver = false;
+            gameHelper.OnNewHand();
             SetButtons();
         }
         public void Reset() {
