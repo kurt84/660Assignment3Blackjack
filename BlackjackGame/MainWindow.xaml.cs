@@ -17,6 +17,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using static GameHandler.Events;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace BlackjackGame
 {
@@ -59,10 +61,10 @@ namespace BlackjackGame
             {
                 int amount = Int32.Parse(betAmount.Text);
                 betAmount.Text = "";
+                currentBetAmount.Content = "Bet: " + amount;
                 canDoubleDown = true;
                 ToggleBetDouble();
                 gameHelper.InitialBet(amount);
-                currentBetAmount.Content = betAmount.Text;
                 currentBank.Content = "Bank: " + gameHelper.GetBank();
                 SetButtons();
             }
@@ -75,10 +77,12 @@ namespace BlackjackGame
             {
                 int amount = Int32.Parse(betAmount.Text);
                 betAmount.Text = "";
+                currentBetAmount.Content += " + " + amount;
                 gameHelper.DoubleDown(amount);
                 canDoubleDown = false;
                 ToggleBetDouble();
                 betGrid.Visibility = Visibility.Hidden;
+                currentBank.Content = "Bank: " + gameHelper.GetBank();
                 SetButtons();
                 EndPlayerTurn();
             }
@@ -104,12 +108,21 @@ namespace BlackjackGame
         }
         private void EndPlayerTurn()
         {
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4)};
             RenderItem.RevealHiddenCard(dealerGrid);
             if (gameHelper.GameOver)
             {
                 dealerText.Text = gameHelper.EndGame();
             }
-            //Wait for a few seconds
+            timer.Start();
+            timer.Tick += (sender, args) =>
+            {
+                timer.Stop();
+                NewHand();
+            };
+        }
+        public void NewHandDelay(object s, ElapsedEventArgs e)
+        {
             NewHand();
         }
         //Prepares to play a new hand
@@ -128,6 +141,7 @@ namespace BlackjackGame
 
             currentBank.Content = "Bank: " + gameHelper.GetBank();
             currentBetAmount.Content = "";
+            gameHelper.GameOver = false;
             SetButtons();
             //gameHelper.Bet(value);   \  can we combine these functions?
             //gameHelper.NewHand();    /
