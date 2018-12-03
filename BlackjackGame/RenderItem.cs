@@ -1,14 +1,11 @@
 ﻿using GameHandler;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Media;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace BlackjackGame
 {
@@ -23,7 +20,7 @@ namespace BlackjackGame
             if (!hidden)
                 resource = "Resources/CardImages/" + ((int)card.Face).ToString() + "_of_" + card.Suit.ToString() + ".png";
             else
-                resource = "Resources/CardImages/Back_of_Card.png";
+                resource = "Resources/CardImages/card_back.png";
             BitmapImage temp = new BitmapImage(new Uri(
                 string.Format(
                     "pack://application:,,,/{0};component/{1}"
@@ -42,8 +39,11 @@ namespace BlackjackGame
 
             grid.Children.Add(image);
 
-            if(!hidden)
+            if (!hidden)
+            {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(CardWidth / 4) });
+            }
+                
 
             Grid.SetColumn(image, (grid.ColumnDefinitions.Count - 4));
 

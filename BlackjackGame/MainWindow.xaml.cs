@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using static GameHandler.Events;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Threading;
 
 namespace BlackjackGame
@@ -30,6 +29,7 @@ namespace BlackjackGame
         public MainWindow()
         {
             InitializeComponent();
+
             Reset();
             var win = new Welcome();
             win.Show();
@@ -38,6 +38,7 @@ namespace BlackjackGame
         private void Hit_Button(object sender, RoutedEventArgs e)
         {
             gameHelper.Hit();
+            canDoubleDown = false;
             if (gameHelper.GameOver)
                 EndPlayerTurn();
             SetButtons();
@@ -66,6 +67,8 @@ namespace BlackjackGame
                 ToggleBetDouble();
                 gameHelper.InitialBet(amount);
                 currentBank.Content = "Bank: " + gameHelper.GetBank();
+                if (gameHelper.GameOver)
+                    EndPlayerTurn();
                 SetButtons();
             }
             else
@@ -121,32 +124,20 @@ namespace BlackjackGame
                 NewHand();
             };
         }
-        public void NewHandDelay(object s, ElapsedEventArgs e)
-        {
-            NewHand();
-        }
         //Prepares to play a new hand
         private void NewHand()
         {
             doubleButton.Visibility = Visibility.Hidden;
             RenderItem.InitGrid(playerGrid);
             RenderItem.InitGrid(dealerGrid);
-            gameHelper.canInsurance = false;
-            gameHelper.canSurrender = true;
-            gameHelper.canDouble = true;
-            gameHelper.canSplit = false;
             canDoubleDown = false;
             betGrid.Visibility = Visibility.Visible;
 
             ToggleBetDouble();
             currentBank.Content = "Bank: " + gameHelper.GetBank();
             currentBetAmount.Content = "";
-            gameHelper.GameOver = false;
+            gameHelper.OnNewHand();
             SetButtons();
-            //gameHelper.Bet(value);   \  can we combine these functions?
-            //gameHelper.NewHand();    /
-            //Calls to render item for player cards
-            //Calls to render item for dealers card and hidden card
         }
         public void Reset() {
             gameHelper = new GameHelper(
@@ -161,10 +152,6 @@ namespace BlackjackGame
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-        public void DoubleDownBet(object sender, RoutedEventArgs e)
-        {
-
-        }
         public void ToggleBetDouble()
         {
             if (!canDoubleDown)
@@ -178,23 +165,6 @@ namespace BlackjackGame
                 submitDouble.Visibility = Visibility.Visible;
             }
         }
-        public void HideExtraFunctions()
-        {
-            if (!canDoubleDown)
-            {
-                doubleButton.Visibility = Visibility.Hidden;
-                splitButton.Visibility = Visibility.Hidden;
-            }
-            surrenderButton.Visibility = Visibility.Hidden;
-            insuranceButton.Visibility = Visibility.Hidden;
-        }
-        public void ShowExtraFunctions()
-        {
-            doubleButton.Visibility = Visibility.Visible;
-            surrenderButton.Visibility = Visibility.Visible;
-            splitButton.Visibility = Visibility.Visible;
-            insuranceButton.Visibility = Visibility.Visible;
-        }
         public void SetButtons()
         {
             if (gameHelper.canInsurance)
@@ -202,10 +172,10 @@ namespace BlackjackGame
                 dealerText.Text = gameHelper.OfferInsurance();
             }
             dealerText.Text = gameHelper.EndGame();
-            //if (gameHelper.canDouble)
-            //    doubleButton.Visibility = Visibility.Visible;
-            //else
-            //    doubleButton.Visibility = Visibility.Hidden;
+            if (gameHelper.canDouble)
+                doubleButton.Visibility = Visibility.Visible;
+            else
+                doubleButton.Visibility = Visibility.Hidden;
 
             if (gameHelper.canSurrender)
                 surrenderButton.Visibility = Visibility.Visible;
