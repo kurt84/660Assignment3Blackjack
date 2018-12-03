@@ -21,6 +21,7 @@ namespace GameHandler
         public bool canSplit = false;
         public bool GameOver = false;
         public bool dealBust = false;
+        public bool dub = false;
         private int finalCount;
         public bool Win = false;
         public bool bust = false;
@@ -66,9 +67,10 @@ namespace GameHandler
                  player.EvaluateHand(dealerCards) <= 21)
             {
                 //CheckWinner = true;
-                p.ReceivePayout(p.CurrentBet);
-                finalCount = p.CurrentBet * 2;
                 
+                //finalCount = p.CurrentBet * 2;
+                
+
                 return player;
             }
 
@@ -89,6 +91,7 @@ namespace GameHandler
         public void InitialBet(int amount)
         {
             p.CurrentBet = 0;
+            finalCount = 0;
             p.MakeBet(amount);
             //p.Bank = p.Bank - amount;
             // in case there is no deal button we could just call this method and run the deal method.
@@ -116,7 +119,7 @@ namespace GameHandler
             d.DealerHand = new List<Card>();
             p.Hand = new List<Card>();
             p.CurrentHand = p.Hand;
-            finalCount = 0;
+            
             
             // add card to player's hand, to dealer's, to player's, and to dealer's to make a two card hand for each
             p.Hit(d.Draw());
@@ -233,6 +236,7 @@ namespace GameHandler
             if (CheckDoubleDown(amount))
             {
                 p.DoubleDown(d.Draw(), amount);
+                dub = true;
                 Stand();
             }
             else
@@ -272,19 +276,16 @@ namespace GameHandler
             if (sCheck2)
             {
                 sCheck = true;
-                p.ReceivePayout(p.CurrentBet / 2);
+                //p.ReceivePayout(p.CurrentBet / 2);
                 finalCount = p.CurrentBetPay(p.CurrentBet / 2);
-                EndGame();
+                
             }
         }
 
         public int GetBank()
         {
-            if (GameOver)
-            {
-                return p.ReceivePayout(finalCount);
-            }
-            return p.Bank;
+            
+            return p.GetBank();
         }
         
 
@@ -311,24 +312,28 @@ namespace GameHandler
                     dealBust = true;
                     CalculateWinner(d, p, d.DealerHand, p.Hand);
                     GameOver = true;
-                    EndGame();
-
-                if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
-                {
-                    CalculateWinner(d, p, d.DealerHand, p.Hand2);
-                    CalculateWinner(d, p, d.DealerHand, p.Hand3);
-                    CalculateWinner(d, p, d.DealerHand, p.Hand4);
                     
-                    EndGame();
-                }
+
+                //if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
+                //{
+                //    CalculateWinner(d, p, d.DealerHand, p.Hand2);
+                //    CalculateWinner(d, p, d.DealerHand, p.Hand3);
+                //    CalculateWinner(d, p, d.DealerHand, p.Hand4);
+                    
+                //    EndGame();
+                //}
             }
             
+            if(d.EvaluateHand(d.DealerHand) == d.EvaluateHand(p.CurrentHand))
+            {
+                GameOver = true; 
+            }
 
             else
             {
                 CalculateWinner(d, p, d.DealerHand, p.Hand);
                 GameOver = true;
-                EndGame();
+                
 
                
 
@@ -343,7 +348,12 @@ namespace GameHandler
         public String EndGame()
         {
 
-
+            if (((dub == true) && dealBust == true && GameOver == true) || 
+                ((dub == true) && (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true)))
+            {
+                p.ReceivePayout(finalCount/2);
+                return "You Won a Double Down " + finalCount;
+            }
 
             if (sCheck)
             {
@@ -351,11 +361,15 @@ namespace GameHandler
             }
             if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)) && GameOver == true)
             {
+                
+                p.ReceivePayout(p.CurrentBet/2);
                 return "Push";
             }
 
             if ((d.EvaluateHand(p.CurrentHand) == 21) && (GameOver == true) && (p.CurrentHand.Count == 2)) 
             {
+                
+                p.ReceivePayout(finalCount);
                 return "BLACKJACK " + finalCount;
             }
             if ((d.EvaluateHand(p.CurrentHand) > 21) && (GameOver == true))
@@ -365,11 +379,15 @@ namespace GameHandler
 
             if (dealBust == true && GameOver == true)
             {
+                finalCount = p.CurrentBet * 2;
+                p.ReceivePayout(finalCount/2);
                 return "Dealer Busted You Win " + finalCount;
             }
 
             if ((d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true))
             {
+                finalCount = p.CurrentBet * 2;
+                p.ReceivePayout(finalCount/2);
                 return "You Won " + finalCount;
             }
 

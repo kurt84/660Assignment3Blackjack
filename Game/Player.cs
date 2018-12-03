@@ -51,7 +51,11 @@ namespace GameHandler
             Bank += amount;
             return Bank;
         }
-
+        
+        public int GetBank()
+        {
+            return Bank;
+        }
 
         public int CurrentBetPay(int amount)
         {
@@ -87,7 +91,8 @@ namespace GameHandler
 
         public List<Card> DoubleDown(Card card, int amount)
         {
-            CurrentBet = CurrentBet + amount; 
+            CurrentBet = CurrentBet + amount;
+            Bank -= amount;
             CurrentHand.Add(card);
             playerNotify(card, i);
             return CurrentHand; 
