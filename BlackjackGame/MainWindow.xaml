@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:BlackjackGame"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Name="tableGrid">
+    <Grid Name="tableGrid" MouseDown="TableClicked">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="150"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="150"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="150"></RowDefinition>
@@ -20,7 +21,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="Resources/cardImages/table_background.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
-        <Grid Name="playerButtons" Grid.Row="2">
+        <Grid Name="playerButtons" Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -38,7 +39,7 @@
             <Button Content="Split" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" x:Name="splitButton" Click="Split_Button"/>
             <Button Content="Insurance" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" x:Name="insuranceButton" Click="Insurance_Button"/>
         </Grid>
-        <Grid Name="dealerGrid" Grid.Column="1" Grid.Row="0">
+        <Grid Name="dealerGrid" Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -46,14 +47,14 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
         </Grid>
-        <Grid Name="playerGrid" Grid.Column="1" Grid.Row="2">
+        <Grid Name="playerGrid" Grid.Column="1" Grid.Row="3">
             <Grid.ColumnDefinitions>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
         </Grid>
-        <Grid Name="betGrid" Grid.Row="1" Grid.Column="2">
+        <Grid Name="betGrid" Grid.Row="2" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -62,10 +63,13 @@
             <Button Name="submitBet" Grid.Row="1" Height="40" Click="Bet_Button" Visibility="Visible">Place Bet</Button>
             <Button Name="submitDouble" Grid.Row="1" Height="40" Click="Double_Button" Visibility="Hidden">Double Down</Button>
         </Grid>
-        <Label Name="currentBetAmount" FontSize="30" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
-        <TextBlock Name="dealerText" Background="Green" Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" FontSize="25" TextWrapping="WrapWithOverflow"></TextBlock>
+        <Label Name="currentBetAmount" FontSize="30" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
+        <Border Grid.Row="0" Grid.Column="1" BorderThickness="2" BorderBrush="Black">
+            <TextBlock Name="dealerText" TextAlignment="Center" FontSize="35" TextWrapping="WrapWithOverflow" FontWeight="Bold"></TextBlock>
+        </Border>
         
-        <Border Grid.Row="2" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+        
+        <Border Grid.Row="3" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
             <Grid>
                 <Label Name="currentBank" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25"></Label>
                 <Grid.Background>

@@ -60,12 +60,19 @@ namespace BlackjackGame
         {
             if (betAmount.Text.Length != 0)
             {
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
                 int amount = Int32.Parse(betAmount.Text);
                 betAmount.Text = "";
                 currentBetAmount.Content = "Bet: " + amount;
                 canDoubleDown = true;
                 ToggleBetDouble();
                 gameHelper.InitialBet(amount);
+                timer.Start();
+                timer.Tick += (s, args) =>
+                {
+                    timer.Stop();
+                    EndPlayerTurn();
+                };
                 currentBank.Content = "Bank: " + gameHelper.GetBank();
                 if (gameHelper.GameOver)
                     EndPlayerTurn();
@@ -73,6 +80,7 @@ namespace BlackjackGame
             }
             else
                 DisplayMessage("You must enter an amount.");
+            EndPlayerTurn();
         }
         private void Double_Button(object sender, RoutedEventArgs e)
         {
@@ -111,18 +119,20 @@ namespace BlackjackGame
         }
         private void EndPlayerTurn()
         {
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4)};
-            RenderItem.RevealHiddenCard(dealerGrid);
             if (gameHelper.GameOver)
             {
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
+                RenderItem.RevealHiddenCard(dealerGrid);
                 dealerText.Text = gameHelper.EndGame();
+
+                timer.Start();
+                timer.Tick += (sender, args) =>
+                {
+                    timer.Stop();
+                    if(gameHelper.GameOver)
+                        NewHand();
+                };
             }
-            timer.Start();
-            timer.Tick += (sender, args) =>
-            {
-                timer.Stop();
-                NewHand();
-            };
         }
         //Prepares to play a new hand
         private void NewHand()
@@ -195,6 +205,12 @@ namespace BlackjackGame
         public void DisplayMessage(string message)
         {
             dealerText.Text = message;
+        }
+
+        private void TableClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (gameHelper.GameOver)
+                NewHand();
         }
     }
 }
