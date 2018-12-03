@@ -60,7 +60,7 @@ namespace BlackjackGame
         {
             if (betAmount.Text.Length != 0)
             {
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2.25) };
                 int amount = Int32.Parse(betAmount.Text);
                 betAmount.Text = "";
                 currentBetAmount.Content = "Bet: " + amount;
