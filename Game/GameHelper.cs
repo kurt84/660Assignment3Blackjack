@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using static GameHandler.Events;
 
 namespace GameHandler
@@ -119,17 +120,19 @@ namespace GameHandler
 
         // Beginning deal method for beginning of hand. 
         // A bet will need to be made before this method can run as a bet needs to be made for the game can begin.
-        public int Deal()
+        public async void Deal()
         {
             // shuffle
             d.Shuffle(1);
-           
-            
-            
+
             // add card to player's hand, to dealer's, to player's, and to dealer's to make a two card hand for each
+            await Task.Delay(500);
             p.Hit(d.Draw());
+            await Task.Delay(500);
             d.Hit(d.Draw());
+            await Task.Delay(500);
             p.Hit(d.Draw());
+            await Task.Delay(500);
             d.Hit(d.Draw());
 
             // check dealers hand for insurance 
@@ -155,15 +158,6 @@ namespace GameHandler
                 EndTurn();
                 p.ReceivePayout(finalCount);
             }
-            
-
-            // write above code is incomplete
-
-            // dealer will 'tell player how much they have' 
-            return d.EvaluateHand(p.Hand);
-
-
-
         }
 
         private Boolean DealerBlackJack()
