@@ -6,15 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackGame", "BlackjackGame\BlackjackGame.csproj", "{D81925A9-2030-44EB-8F32-7A65C9D1980B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3D07CF00-564A-4DFD-A890-A4A411BCC93B} = {3D07CF00-564A-4DFD-A890-A4A411BCC93B}
-		{86752703-CBB5-466D-ACBE-8560B8B681A2} = {86752703-CBB5-466D-ACBE-8560B8B681A2}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHandler", "Game\GameHandler.csproj", "{3D07CF00-564A-4DFD-A890-A4A411BCC93B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{86752703-CBB5-466D-ACBE-8560B8B681A2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3D07CF00-564A-4DFD-A890-A4A411BCC93B} = {3D07CF00-564A-4DFD-A890-A4A411BCC93B}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +24,6 @@ Global
 		{3D07CF00-564A-4DFD-A890-A4A411BCC93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D07CF00-564A-4DFD-A890-A4A411BCC93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D07CF00-564A-4DFD-A890-A4A411BCC93B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86752703-CBB5-466D-ACBE-8560B8B681A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86752703-CBB5-466D-ACBE-8560B8B681A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86752703-CBB5-466D-ACBE-8560B8B681A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86752703-CBB5-466D-ACBE-8560B8B681A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

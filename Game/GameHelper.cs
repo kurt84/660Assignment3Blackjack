@@ -8,13 +8,18 @@ namespace GameHandler
     public class GameHelper
     {
         private Dealer d;
-        private Player p; 
+        private Player p;
         private int deck = 1;
         private int roll = 100;
         private String name = "";
         private Boolean sCheck;
         private Boolean sCheck2;
         private Boolean InsureCheck;
+        public bool canInsurance = false;
+        public bool canSurrender = true;
+        public bool canDouble = true;
+        public bool canSplit = false;
+        public bool GameOver = false;
         private int finalCount;
         //public Boolean Win { get; private set; }
         //private Boolean CheckWinner = false;
@@ -27,6 +32,15 @@ namespace GameHandler
             finalCount = 0;
             d = new Dealer(dealer, deck);
             p = new Player(player, roll, name);
+        }
+
+        public void OnNewHand()
+        {
+            GameOver = false;
+            canInsurance = false;
+            canSurrender = true;
+            canDouble = true;
+            canSplit = false;
         }
         //---Evaluates the scores to determine the winner-------------------------------
         public IPlayer CalculateWinner(Dealer dealer, 
@@ -49,7 +63,7 @@ namespace GameHandler
             {
                 //CheckWinner = true;
                 p.ReceivePayout(p.CurrentBet * 2);
-                finalCount = p.ReceivePayout(p.CurrentBet * 2);
+                finalCount = p.CurrentBetPay(p.CurrentBet * 2);
                 EndGame();
                 return player;
             }
@@ -69,6 +83,7 @@ namespace GameHandler
         {
 
             p.MakeBet(amount);
+            p.Bank = p.Bank - amount;
             // in case there is no deal button we could just call this method and run the deal method.
             Deal();
         }
@@ -101,16 +116,17 @@ namespace GameHandler
 
             // check dealers hand for insurance 
             // code for checking if insurance should be offered
-            if ((int)d.DealerHand[0].Face == 1)
+            if ((int)d.DealerHand[1].Face == 1)
             {
-                OfferInsurance();
-                if (InsureCheck)
-                {
-                    if (DealerBlackJack())
-                    {
-                        EndGame();
-                    }
-                }
+                canInsurance = true;
+                
+                //if (InsureCheck)
+                //{
+                //    if (DealerBlackJack())
+                //    {
+                //        EndGame();
+                //    }
+                //}
             }
 
             
@@ -161,18 +177,19 @@ namespace GameHandler
         public void Stand()
         {
             sCheck2 = false;
-            
-            if (p.Hand2 == null || p.Hand3 == null || p.Hand4 == null)
-            {
-                d.EvaluateHand(p.Stand());
-                EndTurn();
-            }
 
-            if (p.Hand2 != null && p.Hand3 != null && p.Hand4 != null)
-            {
-                d.EvaluateHand(p.Stand());
-                EndTurn();
-            }
+            //if (p.Hand2 == null || p.Hand3 == null || p.Hand4 == null)
+            //{
+            //    d.EvaluateHand(p.Stand());
+            //    EndTurn();
+            //}
+
+            //if (p.Hand2 != null && p.Hand3 != null && p.Hand4 != null)
+            //{
+            //    d.EvaluateHand(p.Stand());
+            //    EndTurn();
+            //}
+            EndTurn();
 
             
         }
@@ -263,12 +280,14 @@ namespace GameHandler
             if (BustCheck(d, d.DealerHand) == true)
             {
                     CalculateWinner(d, p, d.DealerHand, p.Hand);
+                    EndGame();
 
                 if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
                 {
                     CalculateWinner(d, p, d.DealerHand, p.Hand2);
                     CalculateWinner(d, p, d.DealerHand, p.Hand3);
                     CalculateWinner(d, p, d.DealerHand, p.Hand4);
+                    EndGame();
                 }
             }
             
@@ -276,12 +295,14 @@ namespace GameHandler
             else
             {
                 CalculateWinner(d, p, d.DealerHand, p.Hand);
+                EndGame();
 
                 if (p.Hand2 != null || p.Hand3 != null || p.Hand4 != null)
                 {
                     CalculateWinner(d, p, d.DealerHand, p.Hand2);
                     CalculateWinner(d, p, d.DealerHand, p.Hand3);
                     CalculateWinner(d, p, d.DealerHand, p.Hand4);
+                    EndGame();
                 }
 
             }
@@ -291,8 +312,8 @@ namespace GameHandler
         // For message in the GUI
         public String EndGame()
         {
-            
-            
+
+            GameOver = true;
 
             if (sCheck)
             {
