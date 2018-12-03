@@ -148,7 +148,7 @@ namespace GameHandler
 
         private Boolean DealerBlackJack()
         {
-            if (d.EvaluateHand(d.DealerHand) == 21)
+            if (d.EvaluateHand(d.DealerHand) == 21 && d.DealerHand.Count == 2)
             {
                 finalCount = p.CurrentBet;
                 GameOver = true;
@@ -355,7 +355,7 @@ namespace GameHandler
                 return "You Won " + finalCount;
             }
 
-            if (DealerBlackJack())
+            if (DealerBlackJack() && (GameOver == true))
             {
 
 
