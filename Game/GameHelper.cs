@@ -285,6 +285,7 @@ namespace GameHandler
 
         public void Surrender()
         {
+            GameOver = true;
             sCheck = true;
         }
 
