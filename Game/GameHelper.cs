@@ -63,7 +63,7 @@ namespace GameHandler
             }
             if ((player.EvaluateHand(playerCards) > dealer.EvaluateHand(dealerCards) ||
                  dealer.EvaluateHand(dealerCards) > 21) &&
-                 dealer.EvaluateHand(dealerCards) <= 21)
+                 player.EvaluateHand(dealerCards) <= 21)
             {
                 //CheckWinner = true;
                 p.ReceivePayout(p.CurrentBet);
@@ -139,6 +139,12 @@ namespace GameHandler
                 //}
             }
 
+            if(d.EvaluateHand(p.CurrentHand) == 21)
+            {
+                GameOver = true;
+                finalCount = (p.CurrentBet * 2) + (p.CurrentBet / 2);
+                p.ReceivePayout(finalCount);
+            }
             
 
             // write above code is incomplete
@@ -346,6 +352,11 @@ namespace GameHandler
             if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)) && GameOver == true)
             {
                 return "Push";
+            }
+
+            if ((d.EvaluateHand(p.CurrentHand) == 21) && (GameOver == true) && (p.CurrentHand.Count == 2)) 
+            {
+                return "BLACKJACK " + finalCount;
             }
             if ((d.EvaluateHand(p.CurrentHand) > 21) && (GameOver == true))
             {
