@@ -90,6 +90,13 @@ namespace GameHandler
         // initial bet to be made to get game started
         public void InitialBet(int amount)
         {
+            d.DealerHand = new List<Card>();
+            p.Hand = new List<Card>();
+            p.CurrentHand = p.Hand;
+            dub = false;
+            GameOver = false;
+            dealBust = false;
+            Win = false;
             p.CurrentBet = 0;
             finalCount = 0;
             p.MakeBet(amount);
@@ -116,9 +123,7 @@ namespace GameHandler
         {
             // shuffle
             d.Shuffle(1);
-            d.DealerHand = new List<Card>();
-            p.Hand = new List<Card>();
-            p.CurrentHand = p.Hand;
+           
             
             
             // add card to player's hand, to dealer's, to player's, and to dealer's to make a two card hand for each
@@ -145,7 +150,9 @@ namespace GameHandler
             if(d.EvaluateHand(p.CurrentHand) == 21)
             {
                 GameOver = true;
+                Win = true;
                 finalCount = (p.CurrentBet * 2) + (p.CurrentBet / 2);
+                EndTurn();
                 p.ReceivePayout(finalCount);
             }
             
@@ -299,11 +306,13 @@ namespace GameHandler
 
         private void DealerHit(List<Card> cards)
         {
-            
 
-            while (d.EvaluateHand(d.DealerHand) < 17)
+            if (Win == false)
             {
-                d.Hit(d.Draw());
+                while (d.EvaluateHand(d.DealerHand) < 17)
+                {
+                    d.Hit(d.Draw());
+                }
             }
             
              
@@ -351,8 +360,8 @@ namespace GameHandler
             if (((dub == true) && dealBust == true && GameOver == true) || 
                 ((dub == true) && (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true)))
             {
-                p.ReceivePayout(finalCount/2);
-                return "You Won a Double Down " + finalCount;
+                p.ReceivePayout(p.CurrentBet * 2);
+                return "You Won a Double Down " + p.CurrentBet * 2;
             }
 
             if (sCheck)
