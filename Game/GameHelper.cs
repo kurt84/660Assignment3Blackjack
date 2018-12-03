@@ -21,7 +21,8 @@ namespace GameHandler
         public bool canSplit = false;
         public bool GameOver = false;
         private int finalCount;
-        //public Boolean Win { get; private set; }
+        public bool Win = false;
+        public bool bust = false;
         //private Boolean CheckWinner = false;
         public GameHelper(DealerCardEvent dealer, PlayerCardEvent player)
         {
@@ -54,7 +55,10 @@ namespace GameHandler
             {
                 p.CurrentBet = 0;
                 p.ReceivePayout(p.CurrentBet);
-                EndGame();
+                if (p.CurrentHand == p.Hand)
+                {
+                    finalCount = 0;
+                }
                 return dealer;
             }
             if ((player.EvaluateHand(playerCards) > dealer.EvaluateHand(dealerCards) ||
@@ -64,12 +68,15 @@ namespace GameHandler
                 //CheckWinner = true;
                 p.ReceivePayout(p.CurrentBet * 2);
                 finalCount = p.CurrentBetPay(p.CurrentBet * 2);
-                EndGame();
+                
                 return player;
             }
 
             return null;
         }
+
+        
+        
         
         //---Checks to see if the player has busted------------------------------------
         public Boolean BustCheck(IPlayer player, List<Card> playerCards)
@@ -160,6 +167,7 @@ namespace GameHandler
             if(BustCheck(d, p.CurrentHand) == true)
             {
                 CalculateWinner(d, p, d.DealerHand, p.CurrentHand);
+                bust = true;
                 return d.EvaluateHand(p.CurrentHand);
             }
             return d.EvaluateHand(p.CurrentHand);
@@ -312,32 +320,49 @@ namespace GameHandler
 
             
         }
+
+
+
         // For message in the GUI
         public String EndGame()
         {
 
-            GameOver = true;
+
 
             if (sCheck)
             {
                 return "You lose due to Surrender " + finalCount + " returned";
             }
-            if (finalCount > 0)
+
+            if (d.EvaluateHand(p.CurrentHand) > 21)
+            {
+                return "Player Bust";
+            }
+
+            if (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand))
             {
                 return "You Won " + finalCount;
             }
 
-            if(DealerBlackJack())
+            if (DealerBlackJack())
             {
-                // this is hard coded likely won't work as player should be able to choose amount
-                
+
+
                 return "You kept your bet " + finalCount + " returned.";
 
             }
-            else
+            if (d.EvaluateHand(d.DealerHand) > d.EvaluateHand(p.CurrentHand))
             {
                 return "You lose";
             }
+
+            else
+            {
+                return "";
+            }
+
+            
+
             
 
         }
