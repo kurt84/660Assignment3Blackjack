@@ -62,11 +62,16 @@ namespace BlackjackGame
             {
                 var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2.25) };
                 int amount = Int32.Parse(betAmount.Text);
+                if (!gameHelper.InitialBet(amount))
+                {
+                    DisplayMessage("You do not have enough money");
+                    return;
+                }
                 betAmount.Text = "";
                 currentBetAmount.Content = "Bet: " + amount;
                 canDoubleDown = true;
                 ToggleBetDouble();
-                gameHelper.InitialBet(amount);
+
                 timer.Start();
                 timer.Tick += (s, args) =>
                 {
@@ -87,9 +92,13 @@ namespace BlackjackGame
             if (betAmount.Text.Length != 0)
             {
                 int amount = Int32.Parse(betAmount.Text);
+                if (!gameHelper.DoubleDown(amount))
+                {
+                    DisplayMessage("You do not have enough money");
+                    return;
+                }
                 betAmount.Text = "";
                 currentBetAmount.Content += " + " + amount;
-                gameHelper.DoubleDown(amount);
                 canDoubleDown = false;
                 ToggleBetDouble();
                 betGrid.Visibility = Visibility.Hidden;
