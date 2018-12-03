@@ -11,7 +11,7 @@ namespace GameHandler
         private Dealer d;
         private Player p;
         private int deck = 1;
-        private int roll = 100;
+        private int roll;
         private String name = "";
         private Boolean sCheck;
         private Boolean sCheck2;
@@ -29,10 +29,11 @@ namespace GameHandler
         public bool bust = false;
         
         //private Boolean CheckWinner = false;
-        public GameHelper(DealerCardEvent dealer, PlayerCardEvent player)
+        public GameHelper(DealerCardEvent dealer, PlayerCardEvent player, int currentBank)
         {
             //Win = false;
             shuffle = 0;
+            roll = currentBank;
             sCheck = false;
             sCheck2 = true;
             InsureCheck = false;
@@ -344,7 +345,10 @@ namespace GameHandler
             
         }
 
-
+        public void Borrow()
+        {
+            p.ReceivePayout(100);
+        }
 
         // For message in the GUI
         public String EndGame()
@@ -360,7 +364,7 @@ namespace GameHandler
 
                 else if (sCheck)
                 {
-                    p.ReceivePayout((p.CurrentBet / 2));
+                    p.ReceivePayout((p.CurrentBet / 4));
                     return "You Lose Due To Surrender, " + p.CurrentBet / 2 + " Returned";
                 }
                 else if ((d.EvaluateHand(p.CurrentHand) == d.EvaluateHand(d.DealerHand)))

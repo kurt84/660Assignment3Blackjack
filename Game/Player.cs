@@ -37,10 +37,6 @@ namespace GameHandler
         //Subtracts amount from total, returns new total
         public int MakeBet(int amount)
         {
-             
-            //Worry about error handling later - should Player even do this?
-            //if (amount > Bank)
-            //    ;//throw new Exception("Insufficient funds");
             CurrentBet = amount; 
             Bank -= amount;
             return Bank;
@@ -74,18 +70,6 @@ namespace GameHandler
         }
         public List<Card> Stand()
         {
-            // assuming default is null!!!!
-            //if(Hand4 != null)
-            //{
-            //    i = 1; 
-            //    if (Hand4.Count >= 2)
-            //    {
-            //        CurrentHand = Hand4;
-            //        return CurrentHand;
-            //    }
-            //}
-
-            
             return CurrentHand;
         }
 

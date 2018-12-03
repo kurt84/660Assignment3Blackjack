@@ -24,20 +24,15 @@
         <Grid Name="playerButtons" Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Content="Hit" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="30" x:Name="hitButton" Click="Hit_Button"/>
-            <Button Content="Stand" Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" x:Name="standButton" Click="Stand_Button"/>
-            <Button Content="Surrender" Grid.Column="1" Grid.Row="3" VerticalAlignment="Top" x:Name="surrenderButton" Click="Surrender_Button"/>
-            <Button Content="Double Down" Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top" x:Name="doubleButton" Click="Double_Button"/>
-            <Button Content="Split" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" x:Name="splitButton" Click="Split_Button"/>
-            <Button Content="Insurance" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" x:Name="insuranceButton" Click="Insurance_Button"/>
+            <Button Content="Hit" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="50" x:Name="hitButton" Click="Hit_Button"/>
+            <Button Content="Stand" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" x:Name="standButton" Height="30" Click="Stand_Button"/>
+            <Button Content="Surrender" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" x:Name="surrenderButton" Height="30" Click="Surrender_Button"/>
         </Grid>
         <Grid Name="dealerGrid" Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>

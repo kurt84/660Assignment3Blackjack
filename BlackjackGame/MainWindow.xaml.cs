@@ -23,16 +23,20 @@ namespace BlackjackGame
 {
     public partial class MainWindow : Window
     {
+        public static string selectedPlayer;
         private bool canDoubleDown = false;
         private bool hideFirstTurnFunctions = false;
+        private bool betMade = false;
+        private Dictionary<string, int> players;
         private GameHelper gameHelper;
         public MainWindow()
         {
             InitializeComponent();
-
-            Reset();
             var win = new Welcome();
-            win.Show();
+            win.ShowDialog();
+            players = File.Load();
+            Reset();
+
         }
 
         private void Hit_Button(object sender, RoutedEventArgs e)
@@ -48,6 +52,7 @@ namespace BlackjackGame
         {
             RenderItem.RevealHiddenCard(dealerGrid);
             gameHelper.Stand();
+            hideFirstTurnFunctions = true;
             EndPlayerTurn();
             SetButtons();
         }
@@ -68,6 +73,7 @@ namespace BlackjackGame
                     DisplayMessage("You do not have enough money");
                     return;
                 }
+                betMade = true;
                 betAmount.Text = "";
                 currentBetAmount.Content = "Bet: " + amount;
                 canDoubleDown = true;
@@ -80,9 +86,13 @@ namespace BlackjackGame
                     timer.Stop();
                     EndPlayerTurn();
                 };
-                currentBank.Content = "Bank: " + gameHelper.GetBank();
+                UpdateBank();
                 if (gameHelper.GameOver)
+                {
                     EndPlayerTurn();
+                    hideFirstTurnFunctions = true;
+                }
+                    
                 SetButtons();
             }
             else
@@ -105,7 +115,7 @@ namespace BlackjackGame
                 ToggleBetDouble();
                 hideFirstTurnFunctions = true;
                 betGrid.Visibility = Visibility.Hidden;
-                currentBank.Content = "Bank: " + gameHelper.GetBank();
+                UpdateBank();
                 SetButtons();
                 EndPlayerTurn();
             }
@@ -125,47 +135,51 @@ namespace BlackjackGame
             gameHelper.canInsurance = false;
             SetButtons();
         }
-
-        private void Reset_Button(object sender, RoutedEventArgs e)
-        {
-            //Reset();
-        }
         private void EndPlayerTurn()
         {
             if (gameHelper.GameOver)
             {
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
+                betMade = false;
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
                 RenderItem.RevealHiddenCard(dealerGrid);
                 dealerText.Text = gameHelper.EndGame();
-
+                File.Save(players);
                 timer.Start();
                 timer.Tick += (sender, args) =>
                 {
                     timer.Stop();
-                    if(gameHelper.GameOver)
+                    if (gameHelper.GameOver)
                         NewHand();
                 };
+                if (gameHelper.GetBank() <= 0)
+                {
+                    System.Windows.MessageBox.Show("You must borrow from the bank to continue.", "Out Of Money", System.Windows.MessageBoxButton.OK);
+                    gameHelper.Borrow();
+                    UpdateBank();
+                }
             }
         }
         //Prepares to play a new hand
         private void NewHand()
         {
-            doubleButton.Visibility = Visibility.Hidden;
+            betMade = false;
             RenderItem.InitGrid(playerGrid);
             RenderItem.InitGrid(dealerGrid);
             canDoubleDown = false;
             betGrid.Visibility = Visibility.Visible;
 
             ToggleBetDouble();
-            currentBank.Content = "Bank: " + gameHelper.GetBank();
+            UpdateBank();
             currentBetAmount.Content = "";
             gameHelper.OnNewHand();
+            File.Save(players);
             SetButtons();
         }
         public void Reset() {
             gameHelper = new GameHelper(
                 new DealerCardEvent((Card card, bool hidden) => { RenderItem.Card(card, dealerGrid, hidden); return card; }),
-                new PlayerCardEvent((Card card, int hands) => { /*DO SOMETHING WITH HANDS VARIABLE*/RenderItem.Card(card, playerGrid); return card; })
+                new PlayerCardEvent((Card card, int hands) => { RenderItem.Card(card, playerGrid); return card; }),
+                players[selectedPlayer]
             );
             NewHand();
             SetButtons();
@@ -190,30 +204,30 @@ namespace BlackjackGame
         }
         public void SetButtons()
         {
-            if (gameHelper.canInsurance)
+            if (gameHelper.canInsurance && betMade)
             {
                 dealerText.Text = gameHelper.OfferInsurance();
             }
             dealerText.Text = gameHelper.EndGame();
-            if (gameHelper.canDouble)
-                doubleButton.Visibility = Visibility.Visible;
-            else
-                doubleButton.Visibility = Visibility.Hidden;
 
-            if (gameHelper.canSurrender)
-                surrenderButton.Visibility = Visibility.Visible;
-            else
+            if (hideFirstTurnFunctions || !betMade)
+            {
                 surrenderButton.Visibility = Visibility.Hidden;
-
-            if (gameHelper.canSplit)
-                splitButton.Visibility = Visibility.Visible;
+            }
             else
-                splitButton.Visibility = Visibility.Hidden;
-
-            if (gameHelper.canInsurance)
-                insuranceButton.Visibility = Visibility.Visible;
+            {
+                surrenderButton.Visibility = Visibility.Visible;
+            }
+            if (betMade)
+            {
+                hitButton.Visibility = Visibility.Visible;
+                standButton.Visibility = Visibility.Visible;
+            }
             else
-                insuranceButton.Visibility = Visibility.Hidden;
+            {
+                hitButton.Visibility = Visibility.Hidden;
+                standButton.Visibility = Visibility.Hidden;
+            }
         }
         public void DisplayMessage(string message)
         {
@@ -224,6 +238,12 @@ namespace BlackjackGame
         {
             if (gameHelper.GameOver)
                 NewHand();
+        }
+        private void UpdateBank()
+        {
+            int amount = gameHelper.GetBank();
+            players[selectedPlayer] = amount;
+            currentBank.Content = selectedPlayer + ": " + amount;
         }
     }
 }

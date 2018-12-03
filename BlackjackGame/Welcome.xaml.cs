@@ -19,9 +19,39 @@ namespace BlackjackGame
     /// </summary>
     public partial class Welcome : Window
     {
+        private Dictionary<string, int> p;
         public Welcome()
         {
             InitializeComponent();
+            p = File.Load();
+            if(p.Count > 0)
+                playerSelectCombo.ItemsSource = p.Keys.ToList();
+            else
+            {
+                playerSelectCombo.Visibility = Visibility.Hidden;
+                chooseExistingPlayer.Visibility = Visibility.Hidden;
+                chooseLabel.Visibility = Visibility.Hidden;
+                orLabel.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+        private void chooseNewPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            if (newPlayerEntry.Text.Length != 0 && !p.ContainsKey(newPlayerEntry.Text))
+            {
+                string name = newPlayerEntry.Text;
+                p.Add(name, 100);
+                MainWindow.selectedPlayer = name;
+                File.Save(p);
+                this.Close();
+            }
+        }
+
+        private void chooseExistingPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.selectedPlayer = playerSelectCombo.SelectedValue as string;
+            this.Close();
         }
     }
 }

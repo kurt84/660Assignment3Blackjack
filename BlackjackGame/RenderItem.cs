@@ -77,10 +77,5 @@ namespace BlackjackGame
                     
             }
         }
-
-        public static void GameOver()
-        {
-            //draw winner message on the center of the table
-        }
     }
 }

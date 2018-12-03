@@ -7,12 +7,29 @@
         mc:Ignorable="d"
         Title="Welcome" Height="450" Width="400">
     <Grid Margin="0,0,5,0.5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="Resources/cardImages/table_background.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
-        <Label Content="Name:" HorizontalAlignment="Left" Margin="93,122,0,0" VerticalAlignment="Top" Width="43"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="157,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="169"/>
-        <Button Content="Let's Play!" HorizontalAlignment="Left" Margin="157,220,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Enter New Player" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="25"/>
+        <TextBox Name="newPlayerEntry" Grid.Row="1" HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="150" FontSize="25"/>
+        <Button Name="chooseNewPlayer" Grid.Row="1" Grid.Column="1"  Content="Let's Play!" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" Width="150" FontSize="25" Click="chooseNewPlayer_Click"/>
+        <Label Name="orLabel" Grid.ColumnSpan="2" Grid.Row="2" Content="-OR-" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"/>
+        <Label Name="chooseLabel" Grid.ColumnSpan="2" Grid.Row="3" Content="Choose Existing Player" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"/>
+        <ComboBox Name="playerSelectCombo" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="35" FontSize="25">
+        </ComboBox>
+        <Button Name="chooseExistingPlayer" Grid.Column="1" Grid.Row="4"  Content="Let's Play!" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" Width="150" FontSize="25" Click="chooseExistingPlayer_Click"/>
 
     </Grid>
 </Window>
