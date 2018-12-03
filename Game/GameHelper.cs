@@ -45,6 +45,8 @@ namespace GameHandler
             canSurrender = true;
             canDouble = true;
             canSplit = false;
+            if (d.CardsRemaining <= deck * .4)
+                d.Reshuffle(deck);
         }
         //---Evaluates the scores to determine the winner-------------------------------
         public IPlayer CalculateWinner(Dealer dealer, 

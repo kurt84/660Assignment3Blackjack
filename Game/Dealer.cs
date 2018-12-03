@@ -10,6 +10,7 @@ namespace GameHandler
         private List<Card> Deck { get; set; }
         public List<Card> DealerHand { get; set; }
         private int Score { get; set; }
+        public int CardsRemaining { get { return Deck.Count; } }
         private DealerCardEvent dealerNotify;
 
         public Dealer(DealerCardEvent dealerEvent, int numDecks = 1)
@@ -17,14 +18,26 @@ namespace GameHandler
             dealerNotify = dealerEvent;
             Deck = new List<Card>();
             DealerHand = new List<Card>();
-            for (int i = 0; i < numDecks; i++) {
-                foreach(Suit suit in Suit.GetValues(typeof(Suit)))
+            CreateDeck(numDecks);
+        }
+        private void CreateDeck(int numDecks)
+        {
+            Deck = new List<Card>();
+            for (int i = 0; i < numDecks; i++)
+            {
+                foreach (Suit suit in Suit.GetValues(typeof(Suit)))
                 {
-                    foreach (Face face in Face.GetValues(typeof(Face))) {
+                    foreach (Face face in Face.GetValues(typeof(Face)))
+                    {
                         Deck.Add(new Card(suit, face));
                     }
                 }
             }
+        }
+        public void Reshuffle(int numDecks)
+        {
+            CreateDeck(numDecks);
+            Shuffle();
         }
 
         public void Shuffle(int numberOfTimes = 1)
