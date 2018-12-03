@@ -22,7 +22,7 @@ namespace BlackjackGame
 {
     public partial class MainWindow : Window
     {
-        private bool doublingDown = false;
+        private bool canDoubleDown = false;
         private GameHelper gameHelper;
         private const int BETPLACEHOLDER = 5;
         public MainWindow()
@@ -36,36 +36,54 @@ namespace BlackjackGame
         private void Hit_Button(object sender, RoutedEventArgs e)
         {
             gameHelper.Hit();
+            if (gameHelper.GameOver)
+                EndPlayerTurn();
             SetButtons();
         }
         private void Stand_Button(object sender, RoutedEventArgs e)
         {
             RenderItem.RevealHiddenCard(dealerGrid);
             gameHelper.Stand();
-
-            EndHand();
+            EndPlayerTurn();
             SetButtons();
         }
         private void Surrender_Button(object sender, RoutedEventArgs e)
         {
             gameHelper.Surrender();
-            HandleDealer();
+            EndPlayerTurn();
             SetButtons();
         }
         private void Bet_Button(object sender, RoutedEventArgs e)
         {
-            int amount = 0;
-            if(betAmount.Text != null)
-                amount = Int32.Parse(betAmount.Text);
-            gameHelper.InitialBet(amount);
-            SetButtons();
+            if (betAmount.Text.Length != 0)
+            {
+                int amount = Int32.Parse(betAmount.Text);
+                betAmount.Text = "";
+                canDoubleDown = true;
+                ToggleBetDouble();
+                gameHelper.InitialBet(amount);
+                currentBetAmount.Content = betAmount.Text;
+                currentBank.Content = "Bank: " + gameHelper.GetBank();
+                SetButtons();
+            }
+            else
+                DisplayMessage("You must enter an amount.");
         }
         private void Double_Button(object sender, RoutedEventArgs e)
         {
-            doublingDown = true;
-            ToggleBetDouble();
-            betGrid.Visibility = Visibility.Visible;
-            SetButtons();
+            if (betAmount.Text.Length != 0)
+            {
+                int amount = Int32.Parse(betAmount.Text);
+                betAmount.Text = "";
+                gameHelper.DoubleDown(amount);
+                canDoubleDown = false;
+                ToggleBetDouble();
+                betGrid.Visibility = Visibility.Hidden;
+                SetButtons();
+                EndPlayerTurn();
+            }
+            else
+                DisplayMessage("You must enter an amount.");
         }
         private void Split_Button(object sender, RoutedEventArgs e)
         {
@@ -75,47 +93,22 @@ namespace BlackjackGame
         }
         private void Insurance_Button(object sender, RoutedEventArgs e)
         {
-            int amount = BETPLACEHOLDER;
-            gameHelper.MakeInsuranceBet(amount);
+            gameHelper.MakeInsuranceBet();
             gameHelper.canInsurance = false;
             SetButtons();
         }
 
         private void Reset_Button(object sender, RoutedEventArgs e)
         {
-            Reset();
+            //Reset();
         }
-        private void HandleDealer()
+        private void EndPlayerTurn()
         {
-
-            //ADD CODE TO REVEAL DEALERS CARD
             RenderItem.RevealHiddenCard(dealerGrid);
-            //while (!gameHelper.DealerStands)
-            //{
-            //    Card card = gameHelper.DealerHit();
-            //    if (card != null)
-            //        RenderItem.Card(card, dealerGrid);
-            //}
-            //FOR TESTING ONLY - REAL CODE IS ABOVE
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    RenderItem.Card(dealer.Draw(), dealerGrid);
-            //}
-            //EndHand();
-
-        }
-        private void StartHand()
-        {
-            gameHelper.Deal();
-
-        }
-        private void EndHand()
-        {
             if (gameHelper.GameOver)
             {
-               dealerText.Text = gameHelper.EndGame();
+                dealerText.Text = gameHelper.EndGame();
             }
-            //RenderItem.GameOver(gameHelper.GameOverMessage);
             //Wait for a few seconds
             NewHand();
         }
@@ -123,9 +116,19 @@ namespace BlackjackGame
         private void NewHand()
         {
             ToggleBetDouble();
-            doubleButton.Visibility = Visibility.Visible;
+            doubleButton.Visibility = Visibility.Hidden;
             RenderItem.InitGrid(playerGrid);
             RenderItem.InitGrid(dealerGrid);
+            gameHelper.canInsurance = false;
+            gameHelper.canSurrender = true;
+            gameHelper.canDouble = true;
+            gameHelper.canSplit = false;
+            canDoubleDown = false;
+            betGrid.Visibility = Visibility.Visible;
+
+            currentBank.Content = "Bank: " + gameHelper.GetBank();
+            currentBetAmount.Content = "";
+            SetButtons();
             //gameHelper.Bet(value);   \  can we combine these functions?
             //gameHelper.NewHand();    /
             //Calls to render item for player cards
@@ -144,24 +147,13 @@ namespace BlackjackGame
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
-        private void DealMeIn(object sender, RoutedEventArgs e)
-        {
-            ToggleBetDouble();
-            betGrid.Visibility = Visibility.Hidden;
-            currentBetAmount.Content = betAmount.Text;
-            gameHelper.Deal();
-            SetButtons();
-        }
         public void DoubleDownBet(object sender, RoutedEventArgs e)
         {
-            int amount = Int32.Parse(betAmount.Text);
-            gameHelper.DoubleDown(amount);
-            ToggleBetDouble();
+
         }
         public void ToggleBetDouble()
         {
-            if (!doublingDown)
+            if (!canDoubleDown)
             {
                 submitBet.Visibility = Visibility.Visible;
                 submitDouble.Visibility = Visibility.Hidden;
@@ -174,7 +166,7 @@ namespace BlackjackGame
         }
         public void HideExtraFunctions()
         {
-            if (!doublingDown)
+            if (!canDoubleDown)
             {
                 doubleButton.Visibility = Visibility.Hidden;
                 splitButton.Visibility = Visibility.Hidden;
@@ -196,10 +188,10 @@ namespace BlackjackGame
                 dealerText.Text = gameHelper.OfferInsurance();
             }
             dealerText.Text = gameHelper.EndGame();
-            if (gameHelper.canDouble)
-                doubleButton.Visibility = Visibility.Visible;
-            else
-                doubleButton.Visibility = Visibility.Hidden;
+            //if (gameHelper.canDouble)
+            //    doubleButton.Visibility = Visibility.Visible;
+            //else
+            //    doubleButton.Visibility = Visibility.Hidden;
 
             if (gameHelper.canSurrender)
                 surrenderButton.Visibility = Visibility.Visible;
@@ -215,6 +207,10 @@ namespace BlackjackGame
                 insuranceButton.Visibility = Visibility.Visible;
             else
                 insuranceButton.Visibility = Visibility.Hidden;
+        }
+        public void DisplayMessage(string message)
+        {
+            dealerText.Text = message;
         }
     }
 }

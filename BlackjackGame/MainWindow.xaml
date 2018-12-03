@@ -34,7 +34,7 @@
             <Button Content="Hit" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="30" x:Name="hitButton" Click="Hit_Button"/>
             <Button Content="Stand" Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" x:Name="standButton" Click="Stand_Button"/>
             <Button Content="Surrender" Grid.Column="1" Grid.Row="3" VerticalAlignment="Top" x:Name="surrenderButton" Click="Surrender_Button"/>
-            <Button Content="Bet" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" x:Name="betButton" Click="Bet_Button"/>
+            <!--<Button Content="Bet" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" x:Name="betButton" Click="Bet_Button"/>-->
             <Button Content="Double Down" Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top" x:Name="doubleButton" Click="Double_Button"/>
             <Button Content="Split" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" x:Name="splitButton" Click="Split_Button"/>
             <Button Content="Insurance" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" x:Name="insuranceButton" Click="Insurance_Button"/>
@@ -60,11 +60,12 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <TextBox Name="betAmount" Grid.Row="0" Height="40" FontSize="30" PreviewTextInput="NumberValidationTextBox"></TextBox>
-            <Button Name="submitBet" Grid.Row="1" Height="40" Click="DealMeIn" Visibility="Hidden">Place Bet</Button>
-            <Button Name="submitDouble" Grid.Row="1" Height="40" Click="DoubleDownBet" Visibility="Visible">Double Down</Button>
+            <Button Name="submitBet" Grid.Row="1" Height="40" Click="Bet_Button" Visibility="Visible">Place Bet</Button>
+            <Button Name="submitDouble" Grid.Row="1" Height="40" Click="Double_Button" Visibility="Hidden">Double Down</Button>
         </Grid>
         <Label Name="currentBetAmount" Background="Chocolate" FontSize="20"></Label>
         <TextBlock Name="dealerText" Background="Chocolate" Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" FontSize="25" TextWrapping="WrapWithOverflow"></TextBlock>
+        <Label Name="currentBank" Background="Chocolate" Grid.Row="2" Grid.Column="2"></Label>
         <Button Grid.Row="2" Grid.Column="2" Height="50" VerticalAlignment="Bottom" Click="Reset_Button">RESET</Button>
     </Grid>
 </Window>
