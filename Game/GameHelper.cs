@@ -360,7 +360,7 @@ namespace GameHandler
             if (((dub == true) && dealBust == true && GameOver == true) || 
                 ((dub == true) && (d.EvaluateHand(p.CurrentHand) > d.EvaluateHand(d.DealerHand)) && (GameOver == true)))
             {
-                p.ReceivePayout(p.CurrentBet * 2);
+                p.ReceivePayout((p.CurrentBet * 2)/2);
                 return "You Won a Double Down " + p.CurrentBet * 2;
             }
 
