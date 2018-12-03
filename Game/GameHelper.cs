@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using static GameHandler.Events;
 
 namespace GameHandler
@@ -289,6 +290,7 @@ namespace GameHandler
 
         public void Surrender()
         {
+            GameOver = true;
             sCheck = true;
         }
 
